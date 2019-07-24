@@ -1,0 +1,35 @@
+{
+    "name": "ajtarragona/censat-client",
+    "description": "Client d'accés a la API Rest de l'aplicació CENSAT",
+    "keywords" : ["laravel5","laravel"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Txomin Medrano Martorell",
+            "email": "tmedrano@tarragona.cat"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "laravel/framework": ">=5.6.0",
+        "guzzlehttp/guzzle": "^6.3@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ajtarragona\\Censat\\": "./src"
+        }
+    },
+    
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ajtarragona\\Censat\\CensatServiceProvider"
+            ],
+            "aliases": {
+                "Censat" : "Ajtarragona\\Censat\\Facades\\Censat"
+            }
+        }
+    }
+}
