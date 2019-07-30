@@ -391,7 +391,7 @@ class CensatClient {
 
 
 	//delete
-	public function delete($census_name, $entity_name, $id, $hard=false){
+	public function deleteInstance($census_name, $entity_name, $id, $hard=false){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
 		$args=[];
 		
