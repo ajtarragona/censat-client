@@ -106,6 +106,9 @@ Returns an entity fields given the entity name
 #### entityField($entity_name, $field_name)
 Returns a single entity field given the entity name and the field name
 
+#### entityGridFields($short_name, $grid_name)
+Returns the fields of an entity grid, given the entity name and the grid name
+
 
   
 
@@ -216,10 +219,7 @@ It is useful for multiple fields (relations, selects, integrations or grids)
  
 
 ### GRIDS
-
-#### entityGridFields($short_name, $grid_name)
-Returns the definition of the fields of an entity grid
-  
+ 
 #### getInstanceGridItems($census_name, $entity_name, $id, $grid_name)
 Returns the items of an instance grid.
   

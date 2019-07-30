@@ -275,6 +275,26 @@ class CensatClient {
 
 	}
 		
+
+	
+
+	//delete instance
+	public function deleteInstance($census_name, $entity_name, $id, $hard=false){
+		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
+		$args=[];
+		
+		if($hard){
+			$args=[
+				'destroy' => true
+			];
+		}
+
+		$ret=$this->call('DELETE',$url, $args);
+
+		return $ret;
+	}	
+	
+
 	
 	
 
@@ -300,22 +320,7 @@ class CensatClient {
 
 	}
 
-
-
-	/* GRIDs */
-
-	//get grid items
-	public function getInstanceGridItems($census_name, $entity_name, $id, $field_name){
-		return $this->getInstanceField($census_name, $entity_name, $id, $field_name);
-	}
-
-	//get grid item
-	public function getInstanceGridItem($census_name, $entity_name, $id, $field_name, $grid_id){
-		$ret=$this->getInstanceField($census_name, $entity_name, $id, $field_name, $grid_id);
-		if($ret && $ret->count()>0) return $ret->first();
-		return null;
-	}
-	
+	//add instance field item
 	public function addInstanceItem($census_name, $entity_name, $id, $field_name, $values){
 		if(is_array($values)){
 			return $this->addInstanceGridItem($census_name, $entity_name, $id, $field_name, $values);
@@ -324,9 +329,35 @@ class CensatClient {
 		}
 	}
 
+
+	//remove grid item
+	public function removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $item_id){
+		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/'.$item_id;
+		$ret=$this->call('DELETE',$url);
+		
+		return $ret;
+		
+	}	
+
+	/* GRIDs */
+
+	//get grid items
+	public function getInstanceGridItems($census_name, $entity_name, $id, $grid_name){
+		return $this->getInstanceField($census_name, $entity_name, $id, $grid_name);
+	}
+
+	//get grid item
+	public function getInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id){
+		$ret=$this->getInstanceField($census_name, $entity_name, $id, $grid_name, $grid_item_id);
+		if($ret && $ret->count()>0) return $ret->first();
+		return null;
+	}
+	
+	
+
 	//add grid items
-	public function addInstanceGridItem($census_name, $entity_name, $id, $field_name, $values=[]){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
+	public function addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[]){
+		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name;
 		$ret=$this->call('POST',$url,[
 			'query' => $values
 		]);
@@ -337,8 +368,8 @@ class CensatClient {
 	}	
 
 	//update grid item
-	public function updateInstanceGridItem($census_name, $entity_name, $id, $field_name, $grid_item_id, $values=[]){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/'.$grid_item_id;
+	public function updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[]){
+		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name.'/'.$grid_item_id;
 		$ret=$this->call('PUT',$url,[
 			'query' => $values
 		]);
@@ -349,17 +380,10 @@ class CensatClient {
 	}
 
 
-	//remove grid item
-	public function removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $grid_item_id){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/'.$grid_item_id;
-		$ret=$this->call('DELETE',$url);
-		
-		return $ret;
-		
-	}	
 	
-	public function removeInstanceGridItem($census_name, $entity_name, $id, $field_name, $grid_item_id){
-		return $this->removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $grid_item_id);
+	
+	public function removeInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id){
+		return $this->removeInstanceFieldItem($census_name, $entity_name, $id, $grid_name, $grid_item_id);
 	}
 
 
@@ -388,24 +412,6 @@ class CensatClient {
 
 
 
-
-
-	//delete
-	public function deleteInstance($census_name, $entity_name, $id, $hard=false){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
-		$args=[];
-		
-		if($hard){
-			$args=[
-				'destroy' => true
-			];
-		}
-
-		$ret=$this->call('DELETE',$url, $args);
-
-		return $ret;
-	}	
-	
 
 	
 

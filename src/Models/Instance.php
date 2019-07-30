@@ -34,6 +34,17 @@ class Instance{
     }
 
 
+    public function entity(){
+        if($this->entity_name) return Censat::entity(($this->entity_name);
+        return null;
+    }
+
+    
+    public function census(){
+        if($this->census_name) return Censat::census(($this->census_name);
+        return null;
+    }
+
 
     public function update($fields){
         if($this->census_name && $this->entity_name && isset($this->id)){
@@ -74,14 +85,14 @@ class Instance{
 
     public function delete(){
         if($this->census_name && $this->entity_name && isset($this->id)){
-            return Censat::delete($this->census_name, $this->entity_name, $this->id);
+            return Censat::deleteInstance($this->census_name, $this->entity_name, $this->id);
         }
     }
 
 
     public function destroy(){
         if($this->census_name && $this->entity_name && isset($this->id)){
-            return Censat::delete($this->census_name, $this->entity_name, $this->id, true);
+            return Censat::deleteInstance($this->census_name, $this->entity_name, $this->id, true);
         }
     }
 
