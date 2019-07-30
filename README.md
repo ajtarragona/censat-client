@@ -227,13 +227,11 @@ Returns a message object.
 
 #### updateInstance($census_name, $entity_name, $id, $fields)
 Update an instance given a census and entity and the instance id.
-
 Fields must be a  key-value array with the field names and its values.
- 
 Returns the updated instance or a message object.
 
 #### updateInstanceField($census_name, $entity_name, $id, $field_name, $value)
-Update an instance single field
+Update an instance single field.
 Returns the updated instance or a message object.
 
 #### clearInstanceField($census_name, $entity_name, $id, $field_name)
