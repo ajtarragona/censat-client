@@ -322,7 +322,7 @@ class CensatClient {
 	}
 
 	//add instance field item
-	public function addInstanceItem($census_name, $entity_name, $id, $field_name, $values){
+	public function addInstanceFieldItem($census_name, $entity_name, $id, $field_name, $values){
 		if(is_array($values)){
 			return $this->addInstanceGridItem($census_name, $entity_name, $id, $field_name, $values);
 		}else{

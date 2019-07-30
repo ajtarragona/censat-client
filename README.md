@@ -238,7 +238,7 @@ Returns the updated instance or a message object.
 Clears (sets to null) an instance field.
 Returns the updated instance or a message object.
  
-#### addInstanceItem($census_name, $entity_name, $id, $field_name, $value)
+#### addInstanceFieldItem($census_name, $entity_name, $id, $field_name, $value)
 Add an item to an instance field, given its value. 
 It is useful for multiple fields (relations, selects, integrations or grids).
 Returns the updated instance or a message object.

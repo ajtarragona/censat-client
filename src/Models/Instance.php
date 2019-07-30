@@ -66,7 +66,7 @@ class Instance{
 
     public function add($field_name, $value){
         if($this->census_name && $this->entity_name && isset($this->id)){
-            return Censat::addInstanceItem($this->census_name, $this->entity_name, $this->id, $field_name, $value);
+            return Censat::addInstanceFieldItem($this->census_name, $this->entity_name, $this->id, $field_name, $value);
         }
     }
 
