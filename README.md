@@ -193,7 +193,7 @@ Create an instance in a given census and entity.
 Fields must be a  key-value array with the field names and its values. 
 For multiple values like selects, relations or grids, use arrays.
 
-Returns the created instance or an exception
+Returns the created instance or an exception.
 
 ```php
     try{
@@ -221,26 +221,32 @@ Returns the created instance or an exception
 
 
 #### deleteInstance($census_name, $entity_name, $id, $hard=false)
-Delte and instance given a census and entity and the instance id.
+Delete and instance given a census and entity and the instance id.
 By default it is a soft delete. Hard delete can be forced setting the parameter `hard`to true.
+Returns a message object.
 
 #### updateInstance($census_name, $entity_name, $id, $fields)
 Update an instance given a census and entity and the instance id.
 Fields must be a  key-value array with the field names and its values. 
+Returns the updated instance or a message object.
 
 #### updateInstanceField($census_name, $entity_name, $id, $field_name, $value)
 Update an instance single field
+Returns the updated instance or a message object.
 
 #### clearInstanceField($census_name, $entity_name, $id, $field_name)
 Clears (sets to null) an instance field.
+Returns the updated instance or a message object.
  
 #### addInstanceItem($census_name, $entity_name, $id, $field_name, $value)
 Add an item to an instance field, given its value. 
 It is useful for multiple fields (relations, selects, integrations or grids)
+Returns the updated instance or a message object.
    
 #### removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $item_id)
 Removes an instance field item, given its id
 It is useful for multiple fields (relations, selects, integrations or grids)
+Returns the updated instance or a message object.
 
 
  
@@ -255,18 +261,23 @@ Returns an item of an instance grid, given its id.
   
 #### addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[])
 Add an item to an instance grid, given its value. 
+Returns the updated instance or a message object.
  
 #### updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[])
 Updates an instance grid item.
+Returns the updated instance or a message object.
   
 #### removeInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id)
 Removes an instance grid item, given its id
+Returns the updated instance or a message object.
  
   
 ### RELATED ENTITIES
 
 #### addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)
 Add an item to an instance relation field, given its id. 
-  
+Returns the updated instance or a message object.
+
 #### removeInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)
 Remove an item from an instance relation field, given its id. 
+Returns the updated instance or a message object.

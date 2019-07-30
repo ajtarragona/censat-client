@@ -316,7 +316,8 @@ class CensatClient {
 	public function clearInstanceField($census_name, $entity_name, $id, $field_name){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
 		$ret=$this->call('DELETE',$url);
-		return $ret;
+		if($ret) return new Instance($census_name, $entity_name, $ret);
+		return false;
 
 	}
 
@@ -335,7 +336,8 @@ class CensatClient {
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/'.$item_id;
 		$ret=$this->call('DELETE',$url);
 		
-		return $ret;
+		if($ret) return new Instance($census_name, $entity_name, $ret);
+		return false;
 		
 	}	
 
