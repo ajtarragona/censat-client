@@ -86,28 +86,28 @@ public  function  test(){
 ### CENSUSES AND ENTITIES DEFINITION
 
 #### censuses()
-Returns all censuses
+Returns all censuses.
 
 #### census($short_name)
-Returns a census given its name
+Returns a census given its name.
 
 #### censusEntities($short_name)
-Returns a census entities given the census name
+Returns a census entities given the census name.
 
 #### entities()
-Returns all entities
+Returns all entities.
 
 #### entity($short_name)
-Returns an entity given its name
+Returns an entity given its name.
 
 #### entityFields($short_name)
-Returns an entity fields given the entity name
+Returns an entity fields given the entity name.
 
 #### entityField($entity_name, $field_name)
-Returns a single entity field given the entity name and the field name
+Returns a single entity field given the entity name and the field name.
 
 #### entityGridFields($short_name, $grid_name)
-Returns the fields of an entity grid, given the entity name and the grid name
+Returns the fields of an entity grid, given the entity name and the grid name.
 
 
   
@@ -116,7 +116,7 @@ Returns the fields of an entity grid, given the entity name and the grid name
 
 
 #### <a name="instances"></a>instances($census_name, $entity_name, $options=[])
-Returns all instances in a given census and entity
+Returns all instances in a given census and entity.
 
 ###### Options:
 -  *fields* : comma separated field names that will be returned. Alias "basefields" will return id, version and dates.
@@ -130,7 +130,7 @@ Returns all instances in a given census and entity
 
 
 #### <a name="search"></a>search($census_name, $entity_name, $filters, $options=[])
-Search instances in a given census and entity
+Search instances in a given census and entity.
 
 ###### Filters:
 Must be an array of filters or filtergroups:
@@ -240,12 +240,12 @@ Returns the updated instance or a message object.
  
 #### addInstanceItem($census_name, $entity_name, $id, $field_name, $value)
 Add an item to an instance field, given its value. 
-It is useful for multiple fields (relations, selects, integrations or grids)
+It is useful for multiple fields (relations, selects, integrations or grids).
 Returns the updated instance or a message object.
    
 #### removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $item_id)
 Removes an instance field item, given its id
-It is useful for multiple fields (relations, selects, integrations or grids)
+It is useful for multiple fields (relations, selects, integrations or grids).
 Returns the updated instance or a message object.
 
 
@@ -268,7 +268,7 @@ Updates an instance grid item.
 Returns the updated instance or a message object.
   
 #### removeInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id)
-Removes an instance grid item, given its id
+Removes an instance grid item, given its id.
 Returns the updated instance or a message object.
  
   
