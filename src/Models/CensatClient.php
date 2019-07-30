@@ -166,12 +166,12 @@ class CensatClient {
 
 
 
-	public function instancesTree($census_name, $entity_name, $short_name, $options=[]){
+	public function instancesTree($census_name, $entity_name, $field_name, $options=[]){
 		if(isset($options["filters"]) ) $options["filters"]=json_encode($options["filters"]);
 
 		// dd($options);
 
-		$tree=$this->call('GET','tree/'.$census_name.'/'.$entity_name.'/'.$short_name,[
+		$tree=$this->call('GET','tree/'.$census_name.'/'.$entity_name.'/'.$field_name,[
 			'query' => $options
 		]);	
 		// return $tree;
@@ -229,7 +229,7 @@ class CensatClient {
 
 
 	//get instance field
-	public function getInstanceField($census_name, $entity_name, $id, $field_name, $grid_id=null){
+	public function getInstanceField($census_name, $entity_name, $id, $field_name, $grid_item_id=null){
 
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
 		if($grid_id) $url.='/'.$grid_id;

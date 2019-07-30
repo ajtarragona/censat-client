@@ -164,7 +164,7 @@ A filtergroup must be a key-value array with following attributes:
 - See [instances](#instances) method
 
 
-#### instancesTree($census_name, $entity_name, $short_name, $options=[])
+#### instancesTree($census_name, $entity_name, $field_name, $options=[])
 Returns the whole instances tree given a census name, an entity name and the field name that establishes the instances parenthood hyerarchy.
 
 ###### Options:
@@ -185,13 +185,40 @@ Returns a single instance given a census name, an entity name and the instance i
 -  *exclude* : comma separated field names that will NOT be returned.
 
 
-#### getInstanceField($census_name, $entity_name, $id, $field_name, $grid_id=null)
-Get instance field
+#### getInstanceField($census_name, $entity_name, $id, $field_name)
+Get an instance field given a census and entity, the instance id and the field name.
 
 #### createInstance($census_name, $entity_name, $fields)
 Create an instance in a given census and entity. 
 Fields must be a  key-value array with the field names and its values. 
 For multiple values like selects, relations or grids, use arrays.
+
+Returns the created instance or an exception
+
+```php
+    try{
+        $instance= Censat::createInstance("census_name","entity_name",[
+            "name" => "John",
+            "surname" => "Smith",
+            "age" => 25,
+            "addresses_grid"=> [
+                [
+                    "street"=>"Fake street",
+                    "number"=> 1
+                ],
+                [
+                    "street"=>"Dumb street",
+                    "number"=> 33
+                    "floor" => 1
+                ]
+            ],
+            "tags" => [1,2,4]
+        ]);
+    }catch(Exception $e){
+        ...
+    }
+```
+
 
 #### deleteInstance($census_name, $entity_name, $id, $hard=false)
 Delte and instance given a census and entity and the instance id.
