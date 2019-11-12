@@ -38,8 +38,8 @@ trait IsRestClient
 
 			if($this->debug){
 				Log::debug("CENSAT CLIENT: Loggin user {$this->username}");
-				
 			}
+			
 			$response = $this->client->request('POST', "login", [
 				'form_params' => [
 					"username"=> $this->username,
