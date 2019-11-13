@@ -35,13 +35,13 @@ class Instance{
 
 
     public function entity(){
-        if($this->entity_name) return Censat::entity(($this->entity_name);
+        if($this->entity_name) return Censat::entity($this->entity_name);
         return null;
     }
 
     
     public function census(){
-        if($this->census_name) return Censat::census(($this->census_name);
+        if($this->census_name) return Censat::census($this->census_name);
         return null;
     }
 

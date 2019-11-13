@@ -86,13 +86,13 @@ public  function  test(){
 ### CENSUSES AND ENTITIES DEFINITION
 
 #### censuses()
-Returns all censuses.
+Returns all censuses. Objects of class [Census](#census)
 
 #### census($short_name)
 Returns a census given its name.
 
 #### censusEntities($short_name)
-Returns a census entities given the census name.
+Returns a census entities given the census name. Objects of class [Entity](#entity)
 
 #### entities()
 Returns all entities.
@@ -101,7 +101,7 @@ Returns all entities.
 Returns an entity given its name.
 
 #### entityFields($short_name)
-Returns an entity fields given the entity name.
+Returns an entity fields given the entity name. Objects of class [Field](#field)
 
 #### entityField($entity_name, $field_name)
 Returns a single entity field given the entity name and the field name.
@@ -116,7 +116,7 @@ Returns the fields of an entity grid, given the entity name and the grid name.
 
 
 #### <a name="instances"></a>instances($census_name, $entity_name, $options=[])
-Returns all instances in a given census and entity.
+Returns all instances in a given census and entity. Objects of class [Instance](#instance)
 
 ###### Options:
 -  *fields* : comma separated field names that will be returned. Alias "basefields" will return id, version and dates.
@@ -188,7 +188,7 @@ Returns a single instance given a census name, an entity name and the instance i
 #### getInstanceField($census_name, $entity_name, $id, $field_name)
 Get an instance field given a census and entity, the instance id and the field name.
 
-#### createInstance($census_name, $entity_name, $fields)
+#### <a name="createInstance"></a>createInstance($census_name, $entity_name, $fields)
 Create an instance in a given census and entity. 
 Fields must be a  key-value array with the field names and its values. 
 For multiple values like selects, relations or grids, use arrays.
@@ -223,30 +223,30 @@ Returns the created instance or an exception.
 #### deleteInstance($census_name, $entity_name, $id, $hard=false)
 Delete and instance given a census and entity and the instance id.
 By default it is a soft delete. Hard delete can be forced setting the parameter `hard`to true.
-Returns a message object.
+Returns true or an Exception
 
 #### updateInstance($census_name, $entity_name, $id, $fields)
 Update an instance given a census and entity and the instance id.
 Fields must be a  key-value array with the field names and its values.
-Returns the updated instance or a message object.
+Returns the updated instance or an Exception.
 
 #### updateInstanceField($census_name, $entity_name, $id, $field_name, $value)
 Update an instance single field.
-Returns the updated instance or a message object.
+Returns the updated instance or an Exception.
 
 #### clearInstanceField($census_name, $entity_name, $id, $field_name)
 Clears (sets to null) an instance field.
-Returns the updated instance or a message object.
+Returns the updated instance or an Exception.
  
 #### addInstanceFieldItem($census_name, $entity_name, $id, $field_name, $value)
 Add an item to an instance field, given its value. 
 It is useful for multiple fields (relations, selects, integrations or grids).
-Returns the updated instance or a message object.
+Returns the updated instance or an Exception.
    
 #### removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $item_id)
 Removes an instance field item, given its id
 It is useful for multiple fields (relations, selects, integrations or grids).
-Returns the updated instance or a message object.
+Returns the updated instance or an Exception.
 
 
  
@@ -261,23 +261,113 @@ Returns an item of an instance grid, given its id.
   
 #### addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[])
 Add an item to an instance grid, given its value. 
-Returns the updated instance or a message object.
+Returns the updated instance an Exception.
  
 #### updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[])
 Updates an instance grid item.
-Returns the updated instance or a message object.
+Returns the updated instance an Exception.
   
 #### removeInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id)
 Removes an instance grid item, given its id.
-Returns the updated instance or a message object.
+Returns the updated instance an Exception.
  
   
 ### RELATED ENTITIES
 
 #### addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)
 Add an item to an instance relation field, given its id. 
-Returns the updated instance or a message object.
+Returns the updated instance an Exception.
 
 #### removeInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)
 Remove an item from an instance relation field, given its id. 
-Returns the updated instance or a message object.
+Returns the updated instance an Exception.
+
+
+
+## PACKAGE CLASSES
+### <a name="census"></a>CENSUS
+#### entity($entity_name)
+Returns an entity in the census given its name
+```php
+$entity=$census->entity('test')
+```
+
+#### entities()
+Returns all the census entities
+
+
+### <a name="census"></a>ENTITY
+#### fields()
+Returns all the entity fields
+
+#### field($short_name)
+Returns an entity field given its name
+
+#### relatedEntity($short_name)
+Returns the related entity given an entity-relation field name
+
+#### forCensus($census_name)
+Locates the entity in the given census. The following methods only work if this has been called previously
+
+#### all($options=[])
+Returns all the instances of the entity    
+```php
+$instances=$entity->forCensus("census_name")->all();
+```
+#### get($id, $options=[])
+Returns an instance of the entity given its id. See [instances](#instances) method available options.
+
+#### search($filters, $options=[])
+Search instances in the entity. See [search](#search) method for filter options.
+
+#### tree( $short_name, $options=[])
+Returns the whole instances tree in the entity given the field name that establishes the instances parenthood hyerarchy.
+
+#### create( $options=[])
+Creates an instance in the entity. See [createInstance](#createInstance) method
+
+### <a name="field"></a>FIELD
+#### settings()
+Returns the field settings
+
+#### options()
+For select field types, returns the select options.
+
+#### gridFields()
+For grid field types, returns the grid fields.
+
+#### relatedEntity()
+For entity-relation field types, returns the related entity
+ 
+
+### <a name="instance"></a>INSTANCE
+
+#### entity()
+Return the instance entity
+
+#### census()
+Return the instance census
+
+#### update($fields)
+Updates the instance given an array of fields.  See [createInstance](#createInstance) method
+
+#### get($field_name)
+Gets the value of given field
+
+#### set($field_name, $value)
+Sets the value of given field
+
+#### add($field_name, $value)
+Adds a value to a given field. Useful for multiple fields and grids.
+
+#### clear($field_name)
+Clears (sets to null) the given field.
+
+#### remove($field_name, $item_id)
+Removes an item from a given field. Useful for multiple fields and grids.
+
+#### delete()
+Soft deletes the instance
+
+#### destroy()
+Destroys the instance

@@ -204,6 +204,9 @@ class CensatClient {
 			'query' => $options
 		]);	
 		
+		if(!isset($options["paginate"]) && (isset($options["page"]) || isset($options["pagesize"]) ) ){
+			$options["paginate"]=true;
+		}
 		if(isset($options["paginate"]) && $options["paginate"] && is_object($array)){
 			$data=collect();
 			foreach($array->data as $node){
@@ -232,7 +235,7 @@ class CensatClient {
 	public function getInstanceField($census_name, $entity_name, $id, $field_name, $grid_item_id=null){
 
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
-		if($grid_id) $url.='/'.$grid_id;
+		if($grid_item_id) $url.='/'.$grid_item_id;
 
 
 		$ret=$this->call('GET',$url);
