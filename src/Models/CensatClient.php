@@ -29,7 +29,7 @@ class CensatClient {
 		$this->options= json_decode(json_encode($opts), FALSE);
 
 		$this->debug = $this->options->debug;
-		$this->apiurl = $this->options->api_url;
+		$this->apiurl = rtrim($this->options->api_url,"/")."/"; //le quito la barra final si la tiene y se la vuelvo a poner. Asi me aseguro que siempre acaba en barra.
 		$this->username = $this->options->api_user;
 		$this->password = $this->options->api_password;
 		$this->client = null;
