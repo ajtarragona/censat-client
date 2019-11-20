@@ -121,6 +121,7 @@ Returns all instances in a given census and entity. Objects of class [Instance](
 ###### Options:
 -  *fields* : comma separated field names that will be returned. Alias "basefields" will return id, version and dates.
 -  *parsevalues* : true will return all object and array values as strings.
+-  *separator* : is parsevalues is set to true, multiple fields will be returned as a comma separated string. With this options you can set a diferent separator character/s.
 -  *exclude* : comma separated field names that will NOT be returned.
 -  *sort* : name of the field to sort by.
 -  *direction* : sort direction (asc or desc).
