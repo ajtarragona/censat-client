@@ -108,9 +108,10 @@ trait IsRestClient
 					if(isJson($ret)){
 						$ret=json_decode($ret);
 						//dump($ret);
-					}else if(!$ret){
-						$ret=true;
 					}
+					// else if(!$ret){
+					// 	$ret=true;
+					// }
 
 					break;
 				default: break;
