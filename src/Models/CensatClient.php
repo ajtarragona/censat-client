@@ -253,7 +253,7 @@ class CensatClient {
 		$url='instances/'.$census_name.'/'.$entity_name;
 		
 		$ret=$this->call('POST',$url,[
-			'query' => $fields
+			'form_params' => $fields
 		]);
 			
 
@@ -269,7 +269,7 @@ class CensatClient {
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
 		
 		$ret=$this->call('PUT',$url,[
-			'query' => $fields
+			'form_params' => $fields
 		]);
 			
 
@@ -303,9 +303,11 @@ class CensatClient {
 
 	//update field
 	public function updateInstanceField($census_name, $entity_name, $id, $field_name, $value){
+		// dd("HOLA");
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
+		// dd($value);
 		$ret=$this->call('PUT',$url,[
-			'query' => [
+			'form_params' => [
 				"value" => $value
 			]
 		]);
@@ -364,7 +366,7 @@ class CensatClient {
 	public function addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[]){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name;
 		$ret=$this->call('POST',$url,[
-			'query' => $values
+			'form_params' => $values
 		]);
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
@@ -376,7 +378,7 @@ class CensatClient {
 	public function updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[]){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name.'/'.$grid_item_id;
 		$ret=$this->call('PUT',$url,[
-			'query' => $values
+			'form_params' => $values
 		]);
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
