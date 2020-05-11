@@ -78,8 +78,11 @@ CENSAT_DEBUG
 CENSAT_API_URL
 CENSAT_API_USER
 CENSAT_API_PASSWORD
+CENSAT_API_TOKEN
 ```
 
+Si definim un token, es farà servir aquest per totes les peticions. Si no, se'n crearà un de nou per cada petició a partir de l'usuari i password.
+És recomanable doncs definir un token ja que es faran la meitat de crides. Censat genera tokens amb una expiració d'un any a través del mètode Login de la seva Api.
 
 Alternativament, pots publicar l'arxiu de configuració del paquet amb la comanda:
 
