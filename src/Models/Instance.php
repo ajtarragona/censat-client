@@ -3,11 +3,11 @@
 namespace Ajtarragona\Censat\Models; 
 
 use Censat;
-use Ajtarragona\Censat\Traits\Castable;
+use Ajtarragona\Censat\Traits\SimpleCastable;
 
 class Instance{
 
-    use Castable;
+    use SimpleCastable;
 
     public $entity_name;
     public $census_name;

@@ -21,39 +21,42 @@ trait IsRestClient
    
 
     private function connect(){
-		if($this->client && $this->token) return;
+		if(!$this->client){
 
+			
+			if($this->debug) Log::debug("CENSAT: Connecting to API:" .$this->apiurl);
+
+
+			$this->client = new Client([
+				'base_uri' => $this->apiurl,
+				'verify' =>false
+			]);
 		
-		if($this->debug) Log::debug("CENSAT: Connecting to API:" .$this->apiurl);
-
-
-		$this->client = new Client([
-			'base_uri' => $this->apiurl,
-			'verify' =>false
-		]);
-		
+		}
 		// dd($this);
 		// dd($this->client);
-		try{
+		if(!$this->token){
+			try{
 
-			if($this->debug){
-				Log::debug("CENSAT CLIENT: Loggin user {$this->username}");
+				if($this->debug){
+					Log::debug("CENSAT CLIENT: Loggin user {$this->username}");
+				}
+				
+				$response = $this->client->request('POST', "login", [
+					'form_params' => [
+						"username"=> $this->username,
+						"password"=> $this->password,
+					],
+					'headers' => [
+						'Accept'     => 'application/json'
+					]
+				]);
+				if($this->debug) Log::debug($response->getBody());
+				$this->token = json_decode($response->getBody())->access_token;
+				// dd($this->token);
+			}catch(Exception $e){
+				$this->parseException($e);
 			}
-			
-			$response = $this->client->request('POST', "login", [
-				'form_params' => [
-					"username"=> $this->username,
-					"password"=> $this->password,
-				],
-				'headers' => [
-					'Accept'     => 'application/json'
-				]
-			]);
-			if($this->debug) Log::debug($response->getBody());
-            $this->token = json_decode($response->getBody())->access_token;
-			// dd($this->token);
-		}catch(Exception $e){
-			$this->parseException($e);
 		}
 			
 	}

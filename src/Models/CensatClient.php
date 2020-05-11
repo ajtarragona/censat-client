@@ -33,8 +33,7 @@ class CensatClient {
 		$this->username = $this->options->api_user;
 		$this->password = $this->options->api_password;
 		$this->client = null;
-		$this->token = null;
-
+		$this->token = $this->options->api_token;
 
 	}
 

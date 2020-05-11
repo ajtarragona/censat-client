@@ -1,6 +1,69 @@
+
+
 # Censat Client for Laravel
 Client d'accés a la API Rest de l'aplicació CENSAT de l'Ajuntament de Tarragona
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Instalació](#instalaci%C3%B3)
+- [Configuració](#configuraci%C3%B3)
+- [Ús](#%C3%BAs)
+  - [A través d'una `Facade`:](#a-trav%C3%A9s-duna-facade)
+  - [Vía Injecció de dependències:](#v%C3%ADa-injecci%C3%B3-de-depend%C3%A8ncies)
+  - [Vía funció `helper`:](#v%C3%ADa-funci%C3%B3-helper)
+- [Funcions](#funcions)
+  - [Definició de censos i entitats](#definici%C3%B3-de-censos-i-entitats)
+    - [censuses()](#censuses)
+    - [census($short_name)](#censusshort_name)
+    - [censusEntities($short_name)](#censusentitiesshort_name)
+    - [entities()](#entities)
+    - [entity($short_name)](#entityshort_name)
+    - [entityFields($short_name)](#entityfieldsshort_name)
+    - [entityField($entity_name, $field_name)](#entityfieldentity_name-field_name)
+    - [entityGridFields($short_name, $grid_name)](#entitygridfieldsshort_name-grid_name)
+  - [Accedint a les instàncies (Crear, modificar i consultar)](#accedint-a-les-inst%C3%A0ncies-crear-modificar-i-consultar)
+    - [instances($census_name, $entity_name, $options=[])](#instancescensus_name-entity_name-options)
+    - [search($census_name, $entity_name, $filters, $options=[])](#searchcensus_name-entity_name-filters-options)
+    - [instancesTree($census_name, $entity_name, $field_name, $options=[])](#instancestreecensus_name-entity_name-field_name-options)
+    - [instance($census_name, $entity_name, $id, $options=[])](#instancecensus_name-entity_name-id-options)
+    - [getInstanceField($census_name, $entity_name, $id, $field_name)](#getinstancefieldcensus_name-entity_name-id-field_name)
+    - [createInstance($census_name, $entity_name, $fields)](#createinstancecensus_name-entity_name-fields)
+    - [deleteInstance($census_name, $entity_name, $id, $hard=false)](#deleteinstancecensus_name-entity_name-id-hardfalse)
+    - [updateInstance($census_name, $entity_name, $id, $fields)](#updateinstancecensus_name-entity_name-id-fields)
+    - [updateInstanceField($census_name, $entity_name, $id, $field_name, $value)](#updateinstancefieldcensus_name-entity_name-id-field_name-value)
+    - [clearInstanceField($census_name, $entity_name, $id, $field_name)](#clearinstancefieldcensus_name-entity_name-id-field_name)
+    - [addInstanceFieldItem($census_name, $entity_name, $id, $field_name, $value)](#addinstancefielditemcensus_name-entity_name-id-field_name-value)
+    - [removeInstanceFieldItem($census_name, $entity_name, $id, $field_name, $item_id)](#removeinstancefielditemcensus_name-entity_name-id-field_name-item_id)
+  - [Graelles (Grids)](#graelles-grids)
+    - [getInstanceGridItems($census_name, $entity_name, $id, $grid_name)](#getinstancegriditemscensus_name-entity_name-id-grid_name)
+    - [getInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id)](#getinstancegriditemcensus_name-entity_name-id-grid_name-grid_item_id)
+    - [addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[])](#addinstancegriditemcensus_name-entity_name-id-grid_name-values)
+    - [updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[])](#updateinstancegriditemcensus_name-entity_name-id-grid_name-grid_item_id-values)
+    - [removeInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id)](#removeinstancegriditemcensus_name-entity_name-id-grid_name-grid_item_id)
+  - [Entitats relacionades](#entitats-relacionades)
+    - [addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)](#addinstancerelateditemcensus_name-entity_name-id-field_name-item_id)
+    - [removeInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)](#removeinstancerelateditemcensus_name-entity_name-id-field_name-item_id)
+  - [Classes](#classes)
+    - [Census](#census)
+    - [Entity](#entity)
+    - [Field](#field)
+    - [Instance](#instance)
+- [Eloquent](#eloquent)
+  - [Definir els models](#definir-els-models)
+    - [Camps](#camps)
+    - [Tipus de camp](#tipus-de-camp)
+  - [Consultar](#consultar)
+    - [all](#all)
+    - [find](#find)
+    - [QueryBuilder](#querybuilder)
+    - [where](#where)
+    - [Scopes](#scopes)
+  - [Crear i Actualitzar](#crear-i-actualitzar)
+  - [Esborrar](#esborrar)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Instalació
 ```bash
@@ -83,7 +146,7 @@ public  function  test(){
 
 ## Funcions
 
-### CENSUSES AND ENTITIES DEFINITION
+### Definició de censos i entitats 
 
 #### censuses()
 Returns all censuses. Objects of class [Census](#census)
@@ -112,10 +175,12 @@ Returns the fields of an entity grid, given the entity name and the grid name.
 
   
 
-### WORKING WITH INSTANCES (CREATE, UPDATE AND QUERY)
+### Accedint a les instàncies (Crear, modificar i consultar)
 
 
-#### <a name="instances"></a>instances($census_name, $entity_name, $options=[])
+<a name="instances"></a>
+
+#### instances($census_name, $entity_name, $options=[])
 Returns all instances in a given census and entity. Objects of class [Instance](#instance)
 
 ###### Options:
@@ -130,7 +195,9 @@ Returns all instances in a given census and entity. Objects of class [Instance](
 -  *pagesize* : page size (default 10).
 
 
-#### <a name="search"></a>search($census_name, $entity_name, $filters, $options=[])
+<a name="search"></a>
+
+#### search($census_name, $entity_name, $filters, $options=[])
 Search instances in a given census and entity.
 
 ###### Filters:
@@ -189,7 +256,9 @@ Returns a single instance given a census name, an entity name and the instance i
 #### getInstanceField($census_name, $entity_name, $id, $field_name)
 Get an instance field given a census and entity, the instance id and the field name.
 
-#### <a name="createInstance"></a>createInstance($census_name, $entity_name, $fields)
+<a name="createInstance"></a>
+
+#### createInstance($census_name, $entity_name, $fields)
 Create an instance in a given census and entity. 
 Fields must be a  key-value array with the field names and its values. 
 For multiple values like selects, relations or grids, use arrays.
@@ -252,7 +321,7 @@ Returns the updated instance or an Exception.
 
  
 
-### GRIDS
+### Graelles (Grids)
  
 #### getInstanceGridItems($census_name, $entity_name, $id, $grid_name)
 Returns the items of an instance grid.
@@ -273,7 +342,7 @@ Removes an instance grid item, given its id.
 Returns the updated instance an Exception.
  
   
-### RELATED ENTITIES
+### Entitats relacionades
 
 #### addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id)
 Add an item to an instance relation field, given its id. 
@@ -285,90 +354,217 @@ Returns the updated instance an Exception.
 
 
 
-## PACKAGE CLASSES
-### <a name="census"></a>CENSUS
-#### entity($entity_name)
+### Classes
+Els diferents mètodes de consulta retornen objectes de diferents classes. A través d'aquestes classes també podem fer crides a diferents mètodes.
+
+<a name="census"></a>
+
+#### Census
+
+##### entity($entity_name)
+
 Returns an entity in the census given its name
 ```php
 $entity=$census->entity('test')
 ```
 
-#### entities()
+##### entities()
 Returns all the census entities
 
+<a name="entity"></a>
 
-### <a name="census"></a>ENTITY
-#### fields()
+#### Entity
+
+##### fields()
 Returns all the entity fields
 
-#### field($short_name)
+##### field($short_name)
 Returns an entity field given its name
 
-#### relatedEntity($short_name)
+##### relatedEntity($short_name)
 Returns the related entity given an entity-relation field name
 
-#### forCensus($census_name)
+##### forCensus($census_name)
 Locates the entity in the given census. The following methods only work if this has been called previously
 
-#### all($options=[])
+##### all($options=[])
 Returns all the instances of the entity    
 ```php
 $instances=$entity->forCensus("census_name")->all();
 ```
-#### get($id, $options=[])
+##### get($id, $options=[])
 Returns an instance of the entity given its id. See [instances](#instances) method available options.
 
-#### search($filters, $options=[])
+##### search($filters, $options=[])
 Search instances in the entity. See [search](#search) method for filter options.
 
-#### tree( $short_name, $options=[])
+##### tree( $short_name, $options=[])
 Returns the whole instances tree in the entity given the field name that establishes the instances parenthood hyerarchy.
 
-#### create( $options=[])
+##### create( $options=[])
 Creates an instance in the entity. See [createInstance](#createInstance) method
 
-### <a name="field"></a>FIELD
-#### settings()
+
+<a name="field"></a>
+
+#### Field
+
+##### settings()
 Returns the field settings
 
-#### options()
+##### options()
 For select field types, returns the select options.
 
-#### gridFields()
+##### gridFields()
 For grid field types, returns the grid fields.
 
-#### relatedEntity()
+##### relatedEntity()
 For entity-relation field types, returns the related entity
  
 
-### <a name="instance"></a>INSTANCE
+<a name="instance"></a>
 
-#### entity()
+#### Instance
+
+##### entity()
 Return the instance entity
 
-#### census()
+##### census()
 Return the instance census
 
-#### update($fields)
+##### update($fields)
 Updates the instance given an array of fields.  See [createInstance](#createInstance) method
 
-#### get($field_name)
+##### get($field_name)
 Gets the value of given field
 
-#### set($field_name, $value)
+##### set($field_name, $value)
 Sets the value of given field
 
-#### add($field_name, $value)
+##### add($field_name, $value)
 Adds a value to a given field. Useful for multiple fields and grids.
 
-#### clear($field_name)
+##### clear($field_name)
 Clears (sets to null) the given field.
 
-#### remove($field_name, $item_id)
+##### remove($field_name, $item_id)
 Removes an item from a given field. Useful for multiple fields and grids.
 
-#### delete()
+##### delete()
 Soft deletes the instance
 
-#### destroy()
+##### destroy()
 Destroys the instance
+
+
+
+## Eloquent 
+Alternativament podem fer servir Eloquent (o una reducció d'aquest) per accedir als models del censat.
+Simplement cal definir els nostres models extenent el model base de Censat.
+
+### Definir els models
+
+Per crear un model d'una entitat hem de fer una classe que extengui la classe `Ajtarragona\Censat\Models\Eloquent\CensatEntity`
+
+I definir el nom del cens i de la entitat a través de les propietats protegides `$census_name` i `$entity_name`
+
+```php
+<?php
+
+namespace App\Models;
+
+use Ajtarragona\Censat\Models\Eloquent\CensatEntity;
+
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+}
+
+```
+
+#### Camps
+
+Podem indicar els camps que es recuperaran de la entitat a través de la propietat protegida `$attributes`. 
+    
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    protected $attributes = ['id','created_at','nom'];
+
+}
+```
+
+Si no ho especifiquem es retornaran tots. Alternativament, podem definir quins camps no volem que es tornin:
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    protected $attributes = [];
+    protected $excluded = ['id','created_at','nom'];
+
+}
+```
+
+#### Tipus de camp
+Podem indicar els tipus de dades d'alguns camps per què al recuperar-los es parsegin automàticament.
+
+```php
+    protected $maps = ["adreca"];
+    protected $images = ["imatge"];
+    protected $selects = ["estat_de_publicacio","modalitat_venda"];
+```
+
+Pels camps de relació, hem d'indicar la classe del model relacionat, que també caldrà que estigui creat.
+```php
+    protected $relations = [
+        "tipus_comerc" => "App\Models\TipusComerc"
+    ];
+```
+
+### Consultar
+#### all
+El mètode `all` ens retorna una col·lecció amb totes les instàncies de la entitat. Cal utilitzar amb precaució amb entitats amb molts registres. En aquest cas tenim opcions de [paginació](#pagination).
+```php
+    $comercos=Comerc::all();
+```
+#### find
+Retorna una instància de la entitat, passat el seu id (a censat sempre la clau primària serà el camp ID).
+```php
+    $comerc=Comerc::find(1);
+```
+
+#### QueryBuilder
+#### Agregats
+#### where
+#### select
+
+<a name="pagination"></a>
+
+#### Paginació
+Paginació
+
+#### Odenació
+#### Scopes
+Podem crear scopes per modificar el QueryBuilder
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    public static function scopePublished($query){
+        $query->where('estat_de_publicacio', 1);
+    }
+}
+```
+
+Aleshores utilitzar-lo dins del query builder:
+
+```php
+    $comercos=Comerc::published()->where('tipus',43)->get();
+```
+
+### Crear i Actualitzar
+### Esborrar

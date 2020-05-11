@@ -9,7 +9,7 @@ class CensatTestController extends Controller
 {
         
     public function test( Censat $censat){
-
+        
         // $tercers->getTercerById(1);
         
         // $censat->test();
