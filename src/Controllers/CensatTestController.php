@@ -2,7 +2,7 @@
 
 namespace Ajtarragona\Censat\Controllers; 
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use \Censat; //facade
 
 class CensatTestController extends Controller
