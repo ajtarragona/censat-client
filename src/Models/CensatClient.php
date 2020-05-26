@@ -417,6 +417,15 @@ class CensatClient {
 	
 
 
+	public function cacheClear($census_name,$entity_name,$instance_id=null){
+		$url='cache/'.$census_name."/".$entity_name;
+		if($instance_id) $url.="/".$instance_id;
+
+		return $this->call('POST',$url);	
+
+	}
+
+
 
 
 	
