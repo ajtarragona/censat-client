@@ -187,7 +187,7 @@ Returns the fields of an entity grid, given the entity name and the grid name.
 Returns all instances in a given census and entity. Objects of class [Instance](#instance)
 
 ###### Options:
--  *fields* : comma separated field names that will be returned. Alias "basefields" will return id, version and dates.
+-  *fields* : comma separated field names that will be returned. See [fields](#fields) section for more info.
 -  *parsevalues* : true will return all object and array values as strings.
 -  *separator* : is parsevalues is set to true, multiple fields will be returned as a comma separated string. With this options you can set a diferent separator character/s.
 -  *exclude* : comma separated field names that will NOT be returned.
@@ -196,6 +196,58 @@ Returns all instances in a given census and entity. Objects of class [Instance](
 -  *paginate* : true to paginate (default false).
 -  *page* : page number.
 -  *pagesize* : page size (default 10).
+
+<a name="fields"></a> 
+
+##### Fields:
+Podem especificar quins camps volem que se'ns retornis amb una llista dels noms, separats per coma.
+
+Tenim l'alias *basefields* que ens retornarà els camps base (id, dates, versio...)
+
+Però a més, podem navegar pel model de dades mitjançant notació punt. Per exemple si volem que ens retorni l'id d'un camp de relació, podem fer:
+
+```
+nom_camp_relacio.id
+```
+
+En el cas de grids o camps múltiples (relacions, integracions, selects) tenim els accessors especials:
+```
+nom_grid.0 (o l'índex que vulguem)
+nom_grid.first 
+nob_grid.last
+```
+
+I la gràcia és que tot plegat es pot concatenar:
+```
+nom_camp.0.nom_grid.1.camp_usuari.username
+```
+
+
+###### Formatadors
+Sobre cada camp, podem aplicar formatadors separant-los amb el caràcter `|`. Aquests s'aplicaran al valor retornat. 
+Per exemple podem fer que ens retorni un valor de text en majúscules:
+```
+nom_camp|upper
+```
+
+Es poden concaternar varios formatadors que s'aplicaran en ordre.
+```
+nom_camp|upper|lower
+```
+
+Aquests son els disponibles:
+
+- **upper**: passa a majúscules
+- **lower**: passa a minúscules
+- **serialize**: serialitza
+- **csv(delimiter?;enclosure?)**: passa a csv, en cas que ens tornin arrays (opcionalment podem definir el caracter delimitador i les cometes per enbolcallar els texts)
+- **json**: passa a json
+- **array**: passa a rray si era un objecte
+- **object**: passa a objecte si era un array
+
+- **matricula/format/string(format?)**: els 3 fan el mateix. Mostra una versió textual del camp retornat.
+- **pad(num;char?;position?)**: afegeix zeros per l'equerra (podem passar el numero de zeros, i opcionalment el caracter a afegir, si no volem q sigui zero i la  posicio: (0: esquerra, 1: dreta, 2:els dos costats) )
+- **count**: retorna el numero d'elements si es retorna un array
 
 
 <a name="search"></a>
