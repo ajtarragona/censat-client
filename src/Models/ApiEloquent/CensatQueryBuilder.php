@@ -1,6 +1,6 @@
 <?php
 
-namespace Ajtarragona\Censat\Models\Eloquent;
+namespace Ajtarragona\Censat\Models\ApiEloquent;
 
 use Censat;
 use Illuminate\Pagination\LengthAwarePaginator;

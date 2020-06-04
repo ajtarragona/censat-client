@@ -1,6 +1,6 @@
 <?php
 
-namespace Ajtarragona\Censat\Models\Eloquent;
+namespace Ajtarragona\Censat\Models\ApiEloquent;
 
 use Ajtarragona\Censat\Models\Instance;
 use Ajtarragona\Censat\Traits\Castable;

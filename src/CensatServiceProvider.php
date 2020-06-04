@@ -22,18 +22,20 @@ class CensatServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
 
-        //publico configuracion
-        $config = __DIR__.'/Config/censatclient.php';
+        //publico configuracion de la api
+        // $config = __DIR__.'/Config/censat-api.php';
         
         $this->publishes([
-            $config => config_path('censatclient.php'),
+            __DIR__.'/Config/censat-api.php' => config_path('censat-api.php'),
+            __DIR__.'/Config/censat-database.php' => config_path('censat-database.php'),
         ], 'ajtarragona-censat-config');
 
-
-        $this->mergeConfigFrom($config, 'censatclient');
-
+        // $this->mergeConfigFrom($config, 'censat-api');
+        
 
         
+        
+
 
        
     }
@@ -56,5 +58,21 @@ class CensatServiceProvider extends ServiceProvider
         foreach (glob(__DIR__.'/Helpers/*.php') as $filename){
             require_once($filename);
         }
+
+
+        
+        if (file_exists(config_path('censat-api.php'))) {
+            $this->mergeConfigFrom(config_path('censat-api.php'), 'censatclient');
+        } else {
+            $this->mergeConfigFrom(__DIR__.'/Config/censat-api.php', 'censatclient');
+        }
+
+
+        if (file_exists(config_path('censat-database.php'))) {
+            $this->mergeConfigFrom(config_path('censat-database.php'), 'database.connections');
+        } else {
+            $this->mergeConfigFrom(__DIR__.'/Config/censat-database.php', 'database.connections');
+        }
+        
     }
 }

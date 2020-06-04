@@ -8,6 +8,5 @@ return [
 	"api_password" => env('CENSAT_API_PASSWORD','*') ,
 	"api_token" => env('CENSAT_API_TOKEN',null) , //si ponen token en el env, se usará este. Si no, se hara login cada vez.
 	
-	
 ];
 

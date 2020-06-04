@@ -1,0 +1,109 @@
+
+/*
+#### Definir els models
+
+Per crear un model d'una entitat hem de fer una classe que extengui la classe `Ajtarragona\Censat\Models\Eloquent\CensatEntity`
+
+I definir el nom del cens i de la entitat a través de les propietats protegides `$census_name` i `$entity_name`
+
+```php
+<?php
+
+namespace App\Models;
+
+use Ajtarragona\Censat\Models\Eloquent\CensatEntity;
+
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+}
+
+```
+
+#### Camps
+
+Podem indicar els camps que es recuperaran de la entitat a través de la propietat protegida `$attributes`. 
+    
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    protected $attributes = ['id','created_at','nom'];
+
+}
+```
+
+Si no ho especifiquem es retornaran tots. Alternativament, podem definir quins camps no volem que es tornin:
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    protected $attributes = [];
+    protected $excluded = ['id','created_at','nom'];
+
+}
+```
+
+#### Tipus de camp
+Podem indicar els tipus de dades d'alguns camps per què al recuperar-los es parsegin automàticament.
+
+```php
+    protected $maps = ["adreca"];
+    protected $images = ["imatge"];
+    protected $selects = ["estat_de_publicacio","modalitat_venda"];
+```
+
+Pels camps de relació, hem d'indicar la classe del model relacionat, que també caldrà que estigui creat.
+```php
+    protected $relations = [
+        "tipus_comerc" => "App\Models\TipusComerc"
+    ];
+```
+
+### Consultar
+#### all
+El mètode `all` ens retorna una col·lecció amb totes les instàncies de la entitat. Cal utilitzar amb precaució amb entitats amb molts registres. En aquest cas tenim opcions de [paginació](#pagination).
+```php
+    $comercos=Comerc::all();
+```
+#### find
+Retorna una instància de la entitat, passat el seu id (a censat sempre la clau primària serà el camp ID).
+```php
+    $comerc=Comerc::find(1);
+```
+
+#### QueryBuilder
+#### Agregats
+#### where
+#### select
+
+<a name="pagination"></a>
+
+#### Paginació
+Paginació
+
+#### Odenació
+#### Scopes
+Podem crear scopes per modificar el QueryBuilder
+```php
+class Activitat extends CensatEntity{
+    protected $census_name = "activitats";
+    protected $entity_name = "activitat";
+    
+    public static function scopePublished($query){
+        $query->where('estat_de_publicacio', 1);
+    }
+}
+```
+
+Aleshores utilitzar-lo dins del query builder:
+
+```php
+    $comercos=Comerc::published()->where('tipus',43)->get();
+```
+
+### Crear i Actualitzar
+### Esborrar
+*/
