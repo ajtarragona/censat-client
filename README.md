@@ -515,4 +515,20 @@ Alternativament podem fer servir Eloquent per accedir als models del censat, sem
 
 Simplement cal definir els nostres models extenent el model base de Censat.
 
+```php
+<?php
 
+namespace App\Models;
+
+use Ajtarragona\Censat\Models\Eloquent\CensatModel;
+
+class NomEntitat extends CensatModel
+{
+    public $table = 'e_nom_entitat';  // nom de la taula
+    public $census_id = 28; //id del cens
+    
+}
+
+```
+
+[Documentació d'Eloquent](https://laravel.com/docs/5.8/eloquent)
