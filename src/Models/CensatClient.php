@@ -267,7 +267,7 @@ class CensatClient {
 		
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
 		
-		$ret=$this->call('PUT',$url,[
+		$ret=$this->call('POST',$url,[
 			'form_params' => $fields
 		]);
 			
@@ -305,7 +305,7 @@ class CensatClient {
 		// dd("HOLA");
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
 		// dd($value);
-		$ret=$this->call('PUT',$url,[
+		$ret=$this->call('POST',$url,[
 			'form_params' => [
 				"value" => $value
 			]
@@ -376,7 +376,7 @@ class CensatClient {
 	//update grid item
 	public function updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[]){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name.'/'.$grid_item_id;
-		$ret=$this->call('PUT',$url,[
+		$ret=$this->call('POST',$url,[
 			'form_params' => $values
 		]);
 
