@@ -15,6 +15,7 @@ class CensatClient {
 
 	protected $options;
 	protected $apiurl;
+	protected $apiversion;
 	protected $username;
 	protected $password;
 	protected $client;
@@ -30,6 +31,9 @@ class CensatClient {
 
 		$this->debug = $this->options->debug;
 		$this->apiurl = rtrim($this->options->api_url,"/")."/"; //le quito la barra final si la tiene y se la vuelvo a poner. Asi me aseguro que siempre acaba en barra.
+		$this->apiversion = $this->options->api_version ?? 2;
+		$this->apiurl.="v".$this->apiversion."/";
+
 		$this->username = $this->options->api_user;
 		$this->password = $this->options->api_password;
 		$this->client = null;
@@ -132,11 +136,7 @@ class CensatClient {
 	public function instance($census_name, $entity_name, $id, $options=[]){
 
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
-		if(isset($options["version"])){
-			$url.='/version/'.$options["version"];
-			unset($options["version"]);
-		}
-
+	
 		$ret=$this->call('GET',$url,[
 			'query' => $options
 		]);

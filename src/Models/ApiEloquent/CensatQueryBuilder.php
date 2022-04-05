@@ -26,8 +26,8 @@ class CensatQueryBuilder{
     protected $model;
     protected $model_class;
 
-    public static $OP_NULL = "isnull";
-    public static $OP_NOTNULL = "isnotnull";
+    public static $OP_NULL = "is_null";
+    public static $OP_NOTNULL = "is_not_null";
     public static $LENGTH_AWARE_PAGINATION = 1;
     public static $SIMPLE_PAGINATION = 2;
 
@@ -132,12 +132,12 @@ class CensatQueryBuilder{
     }
 
     public function whereNull($name){
-        $this->addFilter($name, self::$OP_NULL);
+        $this->addFilter($name, self::$OP_NULL, "dummy");
         return $this;
     }
 
     public function whereNotNull($name){
-        $this->addFilter($name, self::$OP_NOTNULL);
+        $this->addFilter($name, self::$OP_NOTNULL, "dummy");
         return $this;
     }
 
@@ -153,7 +153,7 @@ class CensatQueryBuilder{
 
 
     protected function addFilter($name, $op_or_value, $value=null){
-
+        // dd('addFilter',$this);
         if($value){
             $this->validateOperation($op_or_value);
             if(in_array($op_or_value,[self::$OP_NULL, self::$OP_NOTNULL])){
@@ -167,6 +167,7 @@ class CensatQueryBuilder{
             $this->filters[]=["id"=>$name, "value"=>$op_or_value];
             
         }
+        return $this;
     }
 
 
@@ -196,12 +197,14 @@ class CensatQueryBuilder{
      * Run the query
      */
     public function get(){
+        // dd("HOLA");
+        // dump($this->getOptionsArray());
         $ret=$this->model->getCachedInstances($this->getOptionsArray());
         return $this->prepareResults($ret);   
  
     }
 
-    //faltarian los métodos no estáticos que ya tengo enla istancia
+    //faltarian los métodos no estáticos que ya tengo en la instancia
     
     //update, 
     //get, 

@@ -26,7 +26,8 @@ class CensatEntity {
     protected $images = [];
     protected $selects = [];
     protected $relations = [];
-    
+    protected $encapsulated_response=false;
+
    
 
     public function getCensusName(){ return $this->census_name;}
@@ -113,11 +114,15 @@ class CensatEntity {
     }
     
     public function save(){
-        //garda el objeto
+        //guarda el objeto
         $attrs=$this->attributeValues();
         // dd($attrs);
-        $updated = Censat::updateInstance($this->census_name, $this->entity_name, $this->id, $attrs);
+        return  Censat::updateInstance($this->census_name, $this->entity_name, $this->id, $attrs);
     }
-   
+
+    public function update($attrs){
+        return  Censat::updateInstance($this->census_name, $this->entity_name, $this->id, $attrs);
+        
+    }
 
 }

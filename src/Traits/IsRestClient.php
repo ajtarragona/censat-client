@@ -12,6 +12,7 @@ use Ajtarragona\Censat\Exceptions\CensatNotFoundException;
 use Ajtarragona\Censat\Exceptions\CensatAuthenticationException;
 use Ajtarragona\Censat\Exceptions\CensatNotAllowedException;
 use Ajtarragona\Censat\Exceptions\CensatAlreadyExistsException;
+use Ajtarragona\Censat\Exceptions\CensatBadRequestException;
 use Ajtarragona\Censat\Exceptions\CensatIntegrityException;
 use Ajtarragona\Censat\Exceptions\CensatSizeLimitException;
 use Ajtarragona\Censat\Exceptions\CensatConnectionException;
@@ -97,6 +98,8 @@ trait IsRestClient
 
 		try{
 			$response = $this->client->request($method, $url, $args);
+			// dd($response);
+
 			if($this->debug){
 				Log::debug("STATUS:".$response->getStatusCode());
 				Log::debug("BODY:");
@@ -107,10 +110,22 @@ trait IsRestClient
 				case 201:
 				case 204:
 					$ret = (string) $response->getBody();
-					
-					if(isJson($ret)){
-						$ret=json_decode($ret);
-						//dump($ret);
+					// dd($ret);
+					if($this->apiversion==3){
+						if(isJson($ret)){
+							$ret=json_decode($ret);
+							if($ret->status=="success"){
+								$ret=$ret->return;
+							}else{
+								throw new Exception($ret->message); break;
+							}
+						}
+					}else{
+
+						if(isJson($ret)){
+							$ret=json_decode($ret);
+							//dump($ret);
+						}
 					}
 					// else if(!$ret){
 					// 	$ret=true;
@@ -121,8 +136,8 @@ trait IsRestClient
 			}
 
 			return $ret;
-		} catch (RequestException | ConnectException | ClientException $e) {
-			
+		} catch (Exception $e) {
+			// dd($e);
 			$this->parseException($e);
 		   
 		}
@@ -131,6 +146,7 @@ trait IsRestClient
 	
 
 	private function parseException($e){
+		// dd('parseException',$e);
 		if($this->debug){
 			Log::error("Censat API error");
 			Log::error($e->getMessage());
@@ -138,10 +154,12 @@ trait IsRestClient
 
 
 		if ($e->hasResponse()) {
-			//dd($e->getResponse());
+			// dd($e);
 		   $status=$e->getResponse()->getStatusCode();
 		   switch($status){
-				   case 404:
+				case 400:
+					throw new CensatBadRequestException(__("Censat Bad request")); break;
+				case 404:
 					throw new CensatNotFoundException(__("Object not found in Censat")); break;
 				case 401:
 					//Authentication exception
