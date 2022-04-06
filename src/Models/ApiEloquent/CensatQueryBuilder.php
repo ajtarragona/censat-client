@@ -125,7 +125,9 @@ class CensatQueryBuilder{
         return $this;
     }
 
-    
+    public function count(){
+        return $this->get()->count();
+    }
     public function select($fields){
         $this->fields=$fields;
         return $this;

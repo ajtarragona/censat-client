@@ -1,11 +1,12 @@
 <?php
 
 namespace Ajtarragona\Censat\Traits;
- 
+
+use Ajtarragona\Censat\Models\ApiEloquent\Image;
+use Ajtarragona\Censat\Models\ApiEloquent\Map;
+use Ajtarragona\Censat\Models\ApiEloquent\Select;
 use Ajtarragona\Censat\Models\Instance;
-use Ajtarragona\Censat\Models\Eloquent\Image;
-use Ajtarragona\Censat\Models\Eloquent\Map;
-use Ajtarragona\Censat\Models\Eloquent\Select;
+
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
