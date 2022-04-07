@@ -25,10 +25,14 @@ class CensatSelectModel extends Model
 
     public function getCrossTable()
     {
-
-        //TODO si el select multiple esta en una grid
         if($this->multiple){
-            return "e_".$this->entity_name ."_r_".$this->field_name;
+            $ret = "e_".$this->entity_name;
+            
+            // si el select multiple esta en una grid
+            if($this->grid_name){
+                $ret.="e_".$this->entity_name."_g_".$this->grid_name;
+            }
+             $ret.="_r_".$this->field_name;
         }
     }
 }
