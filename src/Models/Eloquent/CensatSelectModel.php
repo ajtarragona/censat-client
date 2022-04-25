@@ -32,7 +32,8 @@ class CensatSelectModel extends Model
             if($this->grid_name){
                 $ret.="e_".$this->entity_name."_g_".$this->grid_name;
             }
-             $ret.="_r_".$this->field_name;
+            $ret.="_r_".$this->field_name;
+            return $ret;
         }
     }
 }

@@ -244,6 +244,53 @@ class CensatClient {
 	}
 
 
+	private function isFileArray($value){
+		return is_array($value) && array_key_exists("file-name",$value) && array_key_exists("file-content",$value);
+
+	}
+	
+	
+	/**
+	 * Prepara el array de argumentos, si hay archivos los pasa por multipart, si no por form_params
+	 */
+	private function prepareArguments($fields){
+		$prepared_fields=[];
+		if($fields && is_array($fields)){
+			$hasfiles=false;
+
+			foreach($fields as $key=>$value){
+				if($this->isFileArray($value)  ){
+					$prepared_fields[]=[
+						'name' => $key."[]",
+						'filename' => $value['file-name'],
+						'contents' => $value['file-content']
+					];
+					$hasfiles=true;
+				}else{
+					// $normal_fields[$key]=$value;
+					$prepared_fields[]=[
+						'name' => $key,
+						'contents' => $value
+					];
+				}
+			}
+
+			
+			if($hasfiles){
+				$ret= [
+					'multipart' => $prepared_fields
+				];
+			}else{
+				$ret= [
+					'form_params' => $fields
+				];
+			}
+			
+			return $ret;
+		}
+		return $prepared_fields;
+
+	}
 
 	
 	//create instance
@@ -251,9 +298,7 @@ class CensatClient {
 		
 		$url='instances/'.$census_name.'/'.$entity_name;
 		
-		$ret=$this->call('POST',$url,[
-			'form_params' => $fields
-		]);
+		$ret=$this->call('POST',$url, $this->prepareArguments($fields) );
 			
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
@@ -262,15 +307,18 @@ class CensatClient {
 	}
 		
 	
+
+
 	//update instance
 	public function updateInstance($census_name, $entity_name, $id, $fields){
 		
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
 		
-		$ret=$this->call('POST',$url,[
-			'form_params' => $fields
-		]);
-			
+		
+		
+		$args=$this->prepareArguments($fields) ;
+		// dd($args);
+		$ret=$this->call('POST',$url, $args);
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
 		return false;
@@ -305,11 +353,14 @@ class CensatClient {
 		// dd("HOLA");
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name;
 		// dd($value);
-		$ret=$this->call('POST',$url,[
-			'form_params' => [
-				"value" => $value
-			]
-		]);
+		$args=$this->prepareArguments(['value'=> $value]);
+		// dd($args);
+		$ret=$this->call('POST',$url, $args);
+		// [
+		// 	'form_params' => [
+		// 		"value" => $value
+		// 	]
+		// ]);
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
 		return false;
@@ -327,7 +378,7 @@ class CensatClient {
 
 	//add instance field item
 	public function addInstanceFieldItem($census_name, $entity_name, $id, $field_name, $values){
-		if(is_array($values)){
+		if(is_array($values) && !$this->isFileArray($values)){
 			return $this->addInstanceGridItem($census_name, $entity_name, $id, $field_name, $values);
 		}else{
 			return $this->addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $values);
@@ -363,10 +414,9 @@ class CensatClient {
 
 	//add grid items
 	public function addInstanceGridItem($census_name, $entity_name, $id, $grid_name, $values=[]){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name;
-		$ret=$this->call('POST',$url,[
-			'form_params' => $values
-		]);
+		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name.'/add';
+
+		$ret=$this->call('POST',$url, $this->prepareArguments($values) );
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
 		return false;
@@ -376,9 +426,8 @@ class CensatClient {
 	//update grid item
 	public function updateInstanceGridItem($census_name, $entity_name, $id, $grid_name, $grid_item_id, $values=[]){
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$grid_name.'/'.$grid_item_id;
-		$ret=$this->call('POST',$url,[
-			'form_params' => $values
-		]);
+		
+		$ret=$this->call('POST',$url, $this->prepareArguments($values));
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
 		return false;
@@ -398,8 +447,15 @@ class CensatClient {
 	/* RELATED */
 	//add related items
 	public function addInstanceRelatedItem($census_name, $entity_name, $id, $field_name, $item_id){
-		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/'.$item_id;
-		$ret=$this->call('POST',$url);
+		if($this->isFileArray($item_id)){
+			$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/add';
+			$args=$this->prepareArguments(["value"=>$item_id]);
+			$ret=$this->call('POST',$url, $args);
+
+		}else{
+			$url='instances/'.$census_name.'/'.$entity_name.'/'.$id.'/'.$field_name.'/add/'.$item_id;
+			$ret=$this->call('POST',$url);
+		}
 
 		if($ret) return new Instance($census_name, $entity_name, $ret);
 		return false;

@@ -110,14 +110,19 @@ trait IsRestClient
 				case 201:
 				case 204:
 					$ret = (string) $response->getBody();
-					// dd($ret);
+					
 					if($this->apiversion==3){
 						if(isJson($ret)){
 							$ret=json_decode($ret);
-							if($ret->status=="success"){
+							// dd($ret);
+							if(isset($ret->status) && $ret->status=="success"){
 								$ret=$ret->return;
 							}else{
-								throw new Exception($ret->message); break;
+								if(isset($ret->message)){
+									throw new Exception($ret->message); break;
+								}else{
+									//devuelve la respuesta json tal cual
+								}
 							}
 						}
 					}else{
