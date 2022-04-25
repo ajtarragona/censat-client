@@ -7,6 +7,7 @@ use Ajtarragona\Censat\Models\Entity;
 use Ajtarragona\Censat\Models\Census;
 use function GuzzleHttp\json_encode;
 use Ajtarragona\Censat\Exceptions\CensatNotFoundException;
+use Illuminate\Support\Arr;
 
 class CensatClient {
 	
@@ -249,29 +250,48 @@ class CensatClient {
 
 	}
 	
+	private function isArrayOfFileArrays($value){
+		return is_array($value) && array_key_exists("file-name",Arr::first($value)) && array_key_exists("file-content",Arr::first($value));
+
+	}
+	
 	
 	/**
 	 * Prepara el array de argumentos, si hay archivos los pasa por multipart, si no por form_params
 	 */
 	private function prepareArguments($fields){
 		$prepared_fields=[];
+		
 		if($fields && is_array($fields)){
 			$hasfiles=false;
 
 			foreach($fields as $key=>$value){
 				if($this->isFileArray($value)  ){
 					$prepared_fields[]=[
-						'name' => $key."[]",
+						'name' => $key,
 						'filename' => $value['file-name'],
 						'contents' => $value['file-content']
 					];
 					$hasfiles=true;
+				}else if($this->isArrayOfFileArrays($value)){
+					foreach($value as $file_array){
+						if($this->isFileArray($file_array)){
+							$prepared_fields[]=[
+								'name' => $key."[]",
+								'filename' => $file_array['file-name'],
+								'contents' => $file_array['file-content']
+							];
+							$hasfiles=true;
+						}
+					}
 				}else{
 					// $normal_fields[$key]=$value;
+					
 					$prepared_fields[]=[
 						'name' => $key,
 						'contents' => $value
 					];
+					
 				}
 			}
 
@@ -287,6 +307,7 @@ class CensatClient {
 			}
 			
 			return $ret;
+			// dd($ret);
 		}
 		return $prepared_fields;
 
@@ -312,8 +333,8 @@ class CensatClient {
 	//update instance
 	public function updateInstance($census_name, $entity_name, $id, $fields){
 		
+		// dd($fields);
 		$url='instances/'.$census_name.'/'.$entity_name.'/'.$id;
-		
 		
 		
 		$args=$this->prepareArguments($fields) ;

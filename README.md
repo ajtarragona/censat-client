@@ -62,7 +62,8 @@ Pots configurar el paquet a través de l'arxiu `.env` de l'aplicació. Aquests s
 Per a l'accés via API
 ```bash
 CENSAT_DEBUG
-CENSAT_API_URL
+CENSAT_API_URL // no incloure la versio a la URL
+CENSAT_API_VERSION
 CENSAT_API_USER
 CENSAT_API_PASSWORD
 CENSAT_API_TOKEN
@@ -312,10 +313,14 @@ Get an instance field given a census and entity, the instance id and the field n
 
 ##### createInstance($census_name, $entity_name, $fields)
 Create an instance in a given census and entity. 
-Fields must be a  key-value array with the field names and its values. 
-For multiple values like selects, relations or grids, use arrays.
-
 Returns the created instance or an exception.
+
+- Fields must be a key-value array with the field names and its values. 
+- For multiple values like selects, relations, documents or grids, use arrays.
+- Select and relation fields expect the ID of the related values.
+- Document-type fields expect and array with 'file-name' and 'file-content' (binary content)
+- Integration fields (like LDAP users and UOs) expect the PK of the integration (username and code in the examples).
+
 
 ```php
     try{
@@ -334,7 +339,21 @@ Returns the created instance or an exception.
                     "floor" => 1
                 ]
             ],
-            "tags" => [1,2,4]
+            "tags" => [1,2,4], //relation field
+            'document_simple' => [
+                "file-name"=>"doc_name.pdf",
+                "file-content"=>$binary_content
+            ],
+            'document_multiple' => [
+                [
+                    "file-name"=>"doc_name1.pdf",
+                    "file-content"=>$binary_content
+                ],
+                [
+                    "file-name"=>"doc_name2.pdf",
+                    "file-content"=>$binary_content
+                ]
+            ]
         ]);
     }catch(Exception $e){
         ...
