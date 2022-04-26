@@ -48,6 +48,11 @@ Client d'accés a la API Rest de l'aplicació CENSAT de l'Ajuntament de Tarragon
       - [Field](#field)
       - [Instance](#instance)
 - [Vía Base de Dades (Eloquent )](#v%C3%ADa-base-de-dades-eloquent-)
+  - [Camps data](#camps-data)
+  - [Integracions i Mapes](#integracions-i-mapes)
+  - [Relacions](#relacions)
+  - [Selects](#selects)
+  - [Grids](#grids)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
