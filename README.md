@@ -557,6 +557,9 @@ Estem treballant amb models Eloquent, per la qual cosa tenim disponible tota la 
 
 [Documentació d'Eloquent](https://laravel.com/docs/5.8/eloquent)
 
+
+> <span style="color:#ce3b3b">**IMPORTANT!** Per ara només és aconsellable fer servir aquest mètode per consulta. Realitzar modificacions (create, update, delete) directament podria donar generar inconsistència a les dades: no s'auditen els canvis, no s'actualitza caché...</span>
+
 ### Camps data
 Si la nostra entitat té algun camp de tipus **Data**, podem indicar-ho aprofitant el mutator de Laravel `$dates`.
 

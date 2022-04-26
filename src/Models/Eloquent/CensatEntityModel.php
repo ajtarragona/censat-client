@@ -61,6 +61,9 @@ class CensatEntityModel extends CensatBaseModel
     {
         $model=new static;
         if($model->census_id) $data=array_merge($data,['census_id'=>$model->census_id]);
+        
+        //TODO: actualizar la cache de la entidad en remoto
+
         return parent::create($data);
     }
 
