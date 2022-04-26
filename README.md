@@ -532,22 +532,160 @@ Destroys the instance
 ## Vía Base de Dades (Eloquent )
 Alternativament podem fer servir Eloquent per accedir als models del censat, sempre i quant tinguem accés a la base de dades.
 
-Simplement cal definir els nostres models extenent el model base de Censat.
+Simplement cal definir els nostres models extenent el model base `CensatEntityModel`.
 
 ```php
-<?php
-
 namespace App\Models;
 
-use Ajtarragona\Censat\Models\Eloquent\CensatModel;
+use Ajtarragona\Censat\Models\Eloquent\CensatEntityModel;
 
-class NomEntitat extends CensatModel
+class NomEntitat extends CensatEntityModel
 {
-    public $table = 'e_nom_entitat';  // nom de la taula
-    public $census_id = 28; //id del cens
+    public $entity_name = 'nom_entitat';  // nom de la entitat
+    public $census_id = 28; //id del cens (només necessari si la entitat està a més d'un cens)
     
 }
 
 ```
 
+Estem treballant amb models Eloquent, per la qual cosa tenim disponible tota la seva funcionalitat: QueryBuilder, Relacions,  Scopes, Mutators, etc.
+
 [Documentació d'Eloquent](https://laravel.com/docs/5.8/eloquent)
+
+### Camps data
+Si la nostra entitat té algun camp de tipus **Data**, podem indicar-ho aprofitant el mutator de Laravel `$dates`.
+
+```php
+class Tramit extends CensatEntityModel
+{
+    ...
+    protected $dates = [
+        'data_inici',
+        'data_final'
+    ];
+    ...
+    
+```
+### Integracions i Mapes
+Els camps de tipus **Integració** o de tipus **Mapa** son objectes json internament, per la qual cosa ho podem indicar aprofitant el casting d'atributs de Laravel:
+
+```php
+class Tramit extends CensatEntityModel
+{
+    ...
+    protected $casts = [
+        'unitat_organica' => 'object'
+    ];
+    ...
+    
+```
+
+### Relacions
+Si una entitat té algun camp de **Relació**, ho podem indicar a partir dels atributs `$simple_relations` i `$multiple_relations`, indicant el nom del camp i el nom de la classe que modela la entitat relacionada.
+
+```php
+
+class Tramit extends CensatEntityModel
+{
+ 
+    public $entity_name = 'tramit';
+    
+    
+    protected $simple_relations = [
+        'estruc_org' => '\App\Models\Tramits\UnitatOrganica'
+    ];
+
+    protected $multiple_relations = [
+        'classificacio_tematica' => '\App\Models\Tramits\TematicaTramit',
+        'classificacio_perfil' => '\App\Models\Tramits\Perfil'
+    ];
+
+    ...
+
+```
+
+Definint els camps de relació d'aquesta manera aquests automàticament esdevenen relacions Eloquent al model. Podem fer coses com aquestes, per exemple:
+```php
+$tramit=Tramit::find(1);
+$tramit->estruc_org; //aixo retorna una instància de \App\Models\Tramits\UnitatOrganica o null
+$tramit->classificacio_tematica; //aixo retorna una col·lecció
+$tramit->classificacio_tematica()->where('id','>',10)->orderBy('id') //aqui tenim el QueryBuilder
+
+$tramits=Tramit::has('classificacio_tematica')->get() //retorna tramits amb alguna classsificació temàtica
+
+```
+Aquests exemples d'Eloquent son extensibles als camps Select i Grids que veurem tot seguit.
+
+
+### Selects
+Si una entitat té algun camp de tipus **Select**, ho podem indicar a partir dels atributs `$simple_selects` i `$multiple_selects`, indicant el nom del camp i el nom de la classe que modela el select.
+
+```php
+
+class Tramit extends CensatEntityModel
+{
+ 
+    public $entity_name = 'tramit';
+    
+    
+    protected $simple_selects = [
+        'tipus_instancia' => '\App\Models\Tramits\TipusSolicitud',
+        'destinatari' => '\App\Models\Tramits\Destinatari'
+    ];
+
+          
+    protected $multiple_selects = [
+        'formes_tramitacio' => '\App\Models\Tramits\FormaTramitacio'
+    ];
+
+    ...
+
+```
+
+Aquesta classe del Select haurà d'extendre la classe `CensatSelectModel`, indicant el nom de la entitat i el nom del camp.
+
+```php
+namespace App\Models\Tramits;
+use Ajtarragona\Censat\Models\Eloquent\CensatSelectModel;
+
+class TipusSolicitud extends CensatSelectModel
+{
+    public $entity_name="tramit";
+    public $field_name="tipus_instancia";
+
+}  
+```
+
+
+### Grids
+Si una entitat té alguna graella, ho podem indicar a partir de l'atribut `$grids`, indicant el nom de la graella i el nom de la classe que la modela.
+```php
+
+class Tramit extends CensatEntityModel
+{
+ 
+    public $entity_name = 'tramit';
+    
+    
+    protected $grids = [
+        'autors' => '\App\Models\Tramits\Autor'
+    ];   
+    
+    ...
+
+```
+
+Aquesta classe del Grid haurà d'extendre la classe `CensatGridModel`, indicant el nom de la entitat i el nom de la graella.
+
+```php
+namespace App\Models\Tramits;
+use Ajtarragona\Censat\Models\Eloquent\CensatGridModel;
+
+class Autor extends CensatGridModel
+{
+    public $entity_name ="tramit";
+    public $grid_name ="autors";
+
+   ...
+}    
+```
