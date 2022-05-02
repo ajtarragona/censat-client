@@ -8,6 +8,8 @@ use Ajtarragona\Censat\Models\Census;
 use function GuzzleHttp\json_encode;
 use Ajtarragona\Censat\Exceptions\CensatNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Http\UploadedFile;
+
 
 class CensatClient {
 	
@@ -245,13 +247,36 @@ class CensatClient {
 	}
 
 
+	private function isUploadedFile($value){
+		return $value instanceof UploadedFile;
+
+	}
+	
+	private function isArrayOfUploadedFiles($value){
+		return is_array($value) && $this->isUploadedFile(Arr::first($value));
+
+	}
+
+	private function prepareUploadedFile($key,$file){
+		
+		if(!$error=$file->getError()){
+			return [
+				'name' => $key,
+				'filename' => $file->getClientOriginalName(),
+				'contents' => file_get_contents($file->getRealPath())
+			];
+			
+		}
+		return null;
+	}
+	
 	private function isFileArray($value){
 		return is_array($value) && array_key_exists("file-name",$value) && array_key_exists("file-content",$value);
 
 	}
 	
 	private function isArrayOfFileArrays($value){
-		return is_array($value) && array_key_exists("file-name",Arr::first($value)) && array_key_exists("file-content",Arr::first($value));
+		return is_array($value) && $this->isFileArray(Arr::first($value));// && array_key_exists("file-name",Arr::first($value)) && array_key_exists("file-content",Arr::first($value));
 
 	}
 	
@@ -261,12 +286,27 @@ class CensatClient {
 	 */
 	private function prepareArguments($fields){
 		$prepared_fields=[];
-		
+		// dump($fields);
 		if($fields && is_array($fields)){
 			$hasfiles=false;
 
 			foreach($fields as $key=>$value){
-				if($this->isFileArray($value)  ){
+				if($this->isUploadedFile($value)  ){
+					$file=$this->prepareUploadedFile($key,$value);
+					if($file){
+						$prepared_fields[]=$file;
+						$hasfiles=true;
+					}
+					
+				}else if($this->isArrayOfUploadedFiles($value)){
+					foreach($value as $uploadedfile){
+						$file=$this->prepareUploadedFile($key."[]",$uploadedfile);
+						if($file){
+							$prepared_fields[]=$file;
+							$hasfiles=true;
+						}
+					}
+				}elseif($this->isFileArray($value)  ){
 					$prepared_fields[]=[
 						'name' => $key,
 						'filename' => $value['file-name'],
@@ -306,8 +346,8 @@ class CensatClient {
 				];
 			}
 			
-			return $ret;
 			// dd($ret);
+			return $ret;
 		}
 		return $prepared_fields;
 
