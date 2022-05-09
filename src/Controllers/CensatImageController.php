@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use App\Models\Censat\Image;
 use Exception;
 
-class ImageController extends Controller
+class CensatImageController extends Controller
 {
    
     public function show($id){

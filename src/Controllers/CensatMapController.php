@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use App\Models\Censat\Map;
 use Exception;
 
-class MapController extends Controller
+class CensatMapController extends Controller
 {
    
     public function show($name,$location){
