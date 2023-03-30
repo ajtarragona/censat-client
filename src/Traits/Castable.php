@@ -2,6 +2,7 @@
 
 namespace Ajtarragona\Censat\Traits;
 
+use Ajtarragona\Censat\Models\ApiEloquent\GridRow;
 use Ajtarragona\Censat\Models\ApiEloquent\Image;
 use Ajtarragona\Censat\Models\ApiEloquent\Map;
 use Ajtarragona\Censat\Models\ApiEloquent\Select;
@@ -55,6 +56,32 @@ trait Castable
                     $val=Select::cast($value);
                 }
                 
+            }elseif(isset($this->integrations) && in_array($attr, array_keys($this->integrations))){
+                //si es una relacion
+                $classname= $this->integrations[$attr];
+                // dd($classname);
+                if(is_array($value)){
+                    $val=collect();
+                    foreach($value as $v){
+                        $tmp=new $classname;
+                        $tmp->set($v);
+                        $val->push($tmp);
+                    }
+                }else{
+                    $val=new $classname;
+                    $val->set($value);
+                }
+            }elseif(isset($this->grids) && in_array($attr, $this->grids)){
+                //si es un select
+                if(is_array($value)){
+                    $val=collect();
+                    foreach($value as $v){
+                        $tmp=GridRow::cast($v);
+                        $val->push($tmp);
+                    }
+                }else{
+                    $val=GridRow::cast($value);
+                }
             }elseif(isset($this->relations) && in_array($attr, array_keys($this->relations))){
                 //si es una relacion
                 $classname= $this->relations[$attr];

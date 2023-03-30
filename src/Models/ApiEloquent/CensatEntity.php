@@ -26,6 +26,8 @@ class CensatEntity {
     protected $images = [];
     protected $selects = [];
     protected $relations = [];
+    protected $integrations = [];
+    protected $grids = [];
     protected $encapsulated_response=false;
 
    
