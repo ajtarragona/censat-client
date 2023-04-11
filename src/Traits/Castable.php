@@ -40,8 +40,12 @@ trait Castable
             }elseif(isset($this->maps) && in_array($attr, $this->maps)){
                 //si es un mapa
                 // dd($value);
+                // dump($value);
+                if(is_string($value) && isJson($value)) $value=json_decode($value);
+                
                 $val=Map::cast($value[0]);
             }elseif(isset($this->multi_maps) && in_array($attr, $this->multi_maps)){
+                if(is_string($value) && isJson($value)) $value=json_decode($value);
                 //si es un mapa multiple
                 $val=Map::castAll(collect($value));
             }elseif(isset($this->selects) && in_array($attr, $this->selects)){
@@ -113,6 +117,8 @@ trait Castable
             // $ret->setInstance($args);
             return $ret;
         }else{
+            // if($this instanceof Map) dd($args, $value);
+
             if(is_string($args) && $this->hasAttribute($args)){
                 $this->{$args} = $value;
             }else{
