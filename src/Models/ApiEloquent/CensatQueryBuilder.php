@@ -231,6 +231,7 @@ class CensatQueryBuilder{
 
     protected function prepareResults($results){
         $ret=null;
+        // dd($results);
         if($this->pagination==self::$LENGTH_AWARE_PAGINATION){
             // dd($ret);
             $items=($this->model_class)::castAll($results->data);

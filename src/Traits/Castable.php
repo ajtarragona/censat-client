@@ -2,7 +2,7 @@
 
 namespace Ajtarragona\Censat\Traits;
 
-use Ajtarragona\Censat\Models\ApiEloquent\GridRow;
+use Ajtarragona\Censat\Models\GridInstance;
 use Ajtarragona\Censat\Models\ApiEloquent\Image;
 use Ajtarragona\Censat\Models\ApiEloquent\Map;
 use Ajtarragona\Censat\Models\ApiEloquent\Select;
@@ -27,9 +27,10 @@ trait Castable
 
     protected function parseValue($value, $attr){
         $val=null;
+        // dump(get_class($this));
         if($value){
 
-
+            // dd($attr, array_keys($this->grids));
             if(isset($this->dates) && in_array($attr, array_merge($this->default_dates, $this->dates ?? []) ) ){
                 //es una fecha
                 $val=Carbon::parse($value);
@@ -49,6 +50,7 @@ trait Castable
                 //si es un mapa multiple
                 $val=Map::castAll(collect($value));
             }elseif(isset($this->selects) && in_array($attr, $this->selects)){
+                // dump($this->selects);
                 //si es un select
                 if(is_array($value)){
                     $val=collect();
@@ -75,16 +77,23 @@ trait Castable
                     $val=new $classname;
                     $val->set($value);
                 }
-            }elseif(isset($this->grids) && in_array($attr, $this->grids)){
-                //si es un select
+            }elseif(isset($this->grids) && in_array($attr, array_keys($this->grids))){
+                //si es una grid
+                $classname= $this->grids[$attr];
                 if(is_array($value)){
+                    // dd($value);
                     $val=collect();
+                    // dump($classname);
                     foreach($value as $v){
-                        $tmp=GridRow::cast($v);
+                        $tmp=new $classname;
+                        $tmp->set($v);
+                        // die();
+                        // dd($tmp);
                         $val->push($tmp);
                     }
                 }else{
-                    $val=GridRow::cast($value);
+                    $val=new $classname;
+                    $val->set($value);
                 }
             }elseif(isset($this->relations) && in_array($attr, array_keys($this->relations))){
                 //si es una relacion
@@ -93,6 +102,7 @@ trait Castable
                 if(is_array($value)){
                     $val=collect();
                     foreach($value as $v){
+                        // dump($v);
                         $tmp=new $classname;
                         $tmp->set($v);
                         $val->push($tmp);
@@ -111,8 +121,8 @@ trait Castable
 
 
     public function set($args, $value=null){
-
-        if($args instanceof Instance){
+        // dump($args);
+        if($args instanceof Instance || $args instanceof GridInstance){
             $ret= self::fromInstance($args);
             // $ret->setInstance($args);
             return $ret;
@@ -142,7 +152,7 @@ trait Castable
         return (new static)->set($args);
     }
 
-    protected static function fromInstance(Instance $instance){
+    protected static function fromInstance($instance){
         $tmp=new static;
         // dd(array_keys(get_object_vars($instance)));
         foreach(array_keys(get_object_vars($instance)) as $attr){
