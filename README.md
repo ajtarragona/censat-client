@@ -46,11 +46,36 @@ Client d'accés a la API Rest de l'aplicació CENSAT de l'Ajuntament de Tarragon
       - [getAttachment($attachment_id)](#getattachmentattachment_id)
       - [getAttachmentContent($attachment_id)](#getattachmentcontentattachment_id)
       - [downloadAttachment($attachment_id)](#downloadattachmentattachment_id)
-    - [Classes](#classes)
-      - [Census](#census)
-      - [Entity](#entity)
-      - [Field](#field)
-      - [Instance](#instance)
+  - [Classes](#classes)
+    - [Census](#census)
+      - [entity($entity_name)](#entityentity_name)
+      - [entities()](#entities-1)
+    - [Entity](#entity)
+      - [fields()](#fields)
+      - [field($short_name)](#fieldshort_name)
+      - [relatedEntity($short_name)](#relatedentityshort_name)
+      - [forCensus($census_name)](#forcensuscensus_name)
+      - [all($options=[])](#alloptions)
+      - [get($id, $options=[])](#getid-options)
+      - [search($filters, $options=[])](#searchfilters-options)
+      - [tree( $short_name, $options=[])](#tree-short_name-options)
+      - [create( $options=[])](#create-options)
+    - [Field](#field)
+      - [settings()](#settings)
+      - [options()](#options)
+      - [gridFields()](#gridfields)
+      - [relatedEntity()](#relatedentity)
+    - [Instance](#instance)
+      - [entity()](#entity)
+      - [census()](#census)
+      - [update($fields)](#updatefields)
+      - [get($field_name)](#getfield_name)
+      - [set($field_name, $value)](#setfield_name-value)
+      - [add($field_name, $value)](#addfield_name-value)
+      - [clear($field_name)](#clearfield_name)
+      - [remove($field_name, $item_id)](#removefield_name-item_id)
+      - [delete()](#delete)
+      - [destroy()](#destroy)
 - [Vía Base de Dades (Eloquent )](#v%C3%ADa-base-de-dades-eloquent-)
   - [Camps data](#camps-data)
   - [Integracions i Mapes](#integracions-i-mapes)
@@ -447,106 +472,106 @@ Returns an attachment content (encoded in base64) given its Censat ID
 Downloads (streams the file through the response) an attachment given its Censat ID
 
 
-#### Classes
+### Classes
 Els diferents mètodes de consulta retornen objectes de diferents classes. A través d'aquestes classes també podem fer crides a diferents mètodes.
 
 <a name="census"></a>
 
-##### Census
+#### Census
 
-###### entity($entity_name)
+##### entity($entity_name)
 
 Returns an entity in the census given its name
 ```php
 $entity=$census->entity('test')
 ```
 
-###### entities()
+##### entities()
 Returns all the census entities
 
 <a name="entity"></a>
 
-##### Entity
+#### Entity
 
-###### fields()
+##### fields()
 Returns all the entity fields
 
-###### field($short_name)
+##### field($short_name)
 Returns an entity field given its name
 
-###### relatedEntity($short_name)
+##### relatedEntity($short_name)
 Returns the related entity given an entity-relation field name
 
-###### forCensus($census_name)
+##### forCensus($census_name)
 Locates the entity in the given census. The following methods only work if this has been called previously
 
-###### all($options=[])
+##### all($options=[])
 Returns all the instances of the entity    
 ```php
 $instances=$entity->forCensus("census_name")->all();
 ```
-###### get($id, $options=[])
+##### get($id, $options=[])
 Returns an instance of the entity given its id. See [instances](#instances) method available options.
 
-###### search($filters, $options=[])
+##### search($filters, $options=[])
 Search instances in the entity. See [search](#search) method for filter options.
 
-###### tree( $short_name, $options=[])
+##### tree( $short_name, $options=[])
 Returns the whole instances tree in the entity given the field name that establishes the instances parenthood hyerarchy.
 
-###### create( $options=[])
+##### create( $options=[])
 Creates an instance in the entity. See [createInstance](#createInstance) method
 
 
 <a name="field"></a>
 
-##### Field
+#### Field
 
-###### settings()
+##### settings()
 Returns the field settings
 
-###### options()
+##### options()
 For select field types, returns the select options.
 
-###### gridFields()
+##### gridFields()
 For grid field types, returns the grid fields.
 
-###### relatedEntity()
+##### relatedEntity()
 For entity-relation field types, returns the related entity
  
 
 <a name="instance"></a>
 
-##### Instance
+#### Instance
 
-###### entity()
+##### entity()
 Return the instance entity
 
-###### census()
+##### census()
 Return the instance census
 
-###### update($fields)
+##### update($fields)
 Updates the instance given an array of fields.  See [createInstance](#createInstance) method
 
-###### get($field_name)
+##### get($field_name)
 Gets the value of given field
 
-###### set($field_name, $value)
+##### set($field_name, $value)
 Sets the value of given field
 
-###### add($field_name, $value)
+##### add($field_name, $value)
 Adds a value to a given field. Useful for multiple fields and grids.
 
-###### clear($field_name)
+##### clear($field_name)
 Clears (sets to null) the given field.
 
-###### remove($field_name, $item_id)
+##### remove($field_name, $item_id)
 Removes an item from a given field. Useful for multiple fields and grids.
 
-###### delete()
+##### delete()
 Soft deletes the instance
 
-###### destroy()
+##### destroy()
 Destroys the instance
 
 
