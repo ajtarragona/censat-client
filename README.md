@@ -429,6 +429,19 @@ Remove an item from an instance relation field, given its id.
 Returns the updated instance an Exception.
 
 
+  
+#### Attachments (documents)
+
+##### getAttachment($attachment_id)
+Returns an attachment info given its Censat ID
+
+
+##### getAttachmentContent($attachment_id)
+Returns an attachment content given its Censat ID
+
+##### downloadAttachment($attachment_id)
+Downloads (streams the file through the response) an attachment given its Censat ID
+
 
 #### Classes
 Els diferents mètodes de consulta retornen objectes de diferents classes. A través d'aquestes classes també podem fer crides a diferents mètodes.

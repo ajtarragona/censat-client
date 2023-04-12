@@ -545,6 +545,32 @@ class CensatClient {
 
 
 
+	public function getAttachment($attachment_id){
+		$url='attachment/'.$attachment_id;
+		return $this->call('GET',$url);	
+	}
+	
+	public function getAttachmentContent($attachment_id){
+		$url='attachment/'.$attachment_id.'/content';
+		return $this->call('GET',$url);	
+	}
+
+	public function downloadAttachment($attachment_id){
+		$doc=$this->getAttachment($attachment_id);
+		if($doc){
+			$content= $this->getAttachmentContent($attachment_id);
+			return response($content)->withHeaders([
+				'Content-disposition' => 'attachment; filename=' . $doc->name,
+				'Access-Control-Expose-Headers' => 'Content-Disposition',
+				'Content-Type' => $doc->mimetype,
+			]);
+		}
+		abort(500, "Error downloading file");
+
+	}
+
+
+
 	
 
 
