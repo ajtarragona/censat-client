@@ -437,7 +437,7 @@ Returns an attachment info given its Censat ID
 
 
 ##### getAttachmentContent($attachment_id)
-Returns an attachment content given its Censat ID
+Returns an attachment content (encoded in base64) given its Censat ID
 
 ##### downloadAttachment($attachment_id)
 Downloads (streams the file through the response) an attachment given its Censat ID
