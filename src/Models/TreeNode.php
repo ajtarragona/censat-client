@@ -16,6 +16,7 @@ class TreeNode{
     public $name;
     public $census_id;
     public $entity_id;
+    public $instance_id;
     public $census_name;
     public $entity_name;
     public $icon;
@@ -44,7 +45,6 @@ class TreeNode{
 
     public function parent($options=[]){
         return Censat::getNodeParent($this->tree_id, $this->id, $options);
-
     }
     public function siblings($direction=null, $options=[]){
         return Censat::getNodeSiblings($this->tree_id, $this->id, $direction, $options);

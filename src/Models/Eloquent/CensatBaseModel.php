@@ -12,6 +12,8 @@ class CensatBaseModel extends Model
     
     protected $simple_relations = [];
     protected $multiple_relations = [];
+    protected $simple_inverse_relations = [];
+    protected $multiple_inverse_relations = [];
     protected $grids = [];
     protected $simple_selects = [];
     protected $multiple_selects = [];
@@ -32,6 +34,7 @@ class CensatBaseModel extends Model
         if(
             ($this->simple_selects && array_key_exists(Str::snake($key), $this->simple_selects))
             || ($this->simple_relations && array_key_exists(Str::snake($key), $this->simple_relations))
+            || ($this->simple_inverse_relations && array_key_exists(Str::snake($key), $this->simple_inverse_relations))
         ){
             return $this->__call($key,null)->first();
         }
@@ -39,6 +42,7 @@ class CensatBaseModel extends Model
         if( 
             ($this->multiple_selects && array_key_exists(Str::snake($key), $this->multiple_selects) ) 
             || ($this->multiple_relations && array_key_exists(Str::snake($key), $this->multiple_relations) ) 
+            || ($this->multiple_inverse_relations && array_key_exists(Str::snake($key), $this->multiple_inverse_relations) ) 
             || ($this->grids && array_key_exists(Str::snake($key), $this->grids))
         ){
             return $this->__call($key,null)->get();
@@ -78,6 +82,15 @@ class CensatBaseModel extends Model
             
             
         }
+
+        //TODO
+        // if($this->simple_inverse_relations && array_key_exists(Str::snake($method), $this->simple_inverse_relations)){
+        //     // dump($this->simple_relations, $method);
+        //     $class_name  = $this->simple_inverse_relations[Str::snake($method)];
+        //     return $this->belongsTo($class_name, Str::snake($method).'_id');
+            
+            
+        // }
 
         if($this->multiple_relations && array_key_exists(Str::snake($method), $this->multiple_relations)){
             $relation_class=$this->multiple_relations[Str::snake($method)];
