@@ -505,6 +505,8 @@ Retorna els nodes d'un arbre
 -  *depth* : Nivell de profunditat (Si no s'especifica es retornen tots els nivells).
 -  *term* : Paraula de cerca per filtrar els nodes (si s'especifica, es retornaran els nodes sense jerarquia).
 -  *instance_id* : Retorna els nodes en que l'id d'instància sigui el passat.
+-  *entity_id* : Retorna els nodes en que l'id de la entitat sigui el passat.
+-  *census_id* : Retorna els nodes en que l'id del cens sigui el passat.
 
 ##### getNode($tree_id, $node_id, $options=[])
 Retorna un node d'un arbre passant els seus IDs.
