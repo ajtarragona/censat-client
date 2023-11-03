@@ -21,19 +21,42 @@ trait IsRestClient
 {
    
 
+    private function connectFeature(){
+		// if(!$this->client){
+
+		//obtiene el token
+		$this->connect();
+
+		//creo un nuevo cliente
+		$url=substr($this->apiurl, 0, strpos($this->apiurl,"/api"));
+		// dd($this->apiurl,$url);
+		// dump("CENSAT: Connecting to API:" .$url);
+		if($this->debug) Log::debug("CENSAT: Connecting to API:" .$url);
+
+
+		$this->client = new Client([
+			'base_uri' => $url,
+			'verify' =>false
+		]);
+		// dump($this->client);
+
+		
+		// }
+	}
+
     private function connect(){
-		if(!$this->client){
+		// if(!$this->client){
 
 			
-			if($this->debug) Log::debug("CENSAT: Connecting to API:" .$this->apiurl);
+		if($this->debug) Log::debug("CENSAT: Connecting to API:" .$this->apiurl);
 
 
-			$this->client = new Client([
-				'base_uri' => $this->apiurl,
-				'verify' =>false
-			]);
+		$this->client = new Client([
+			'base_uri' => $this->apiurl,
+			'verify' =>false
+		]);
 		
-		}
+		// }
 		// dd($this);
 		// dd($this->client);
 		if(!$this->token){
@@ -64,12 +87,27 @@ trait IsRestClient
 
 
 
-	private function call($method, $url, $args=[]){
+	private function callFeature($method, $feature,$url=null, $args=[]){
+		$feature=ltrim($feature,"/");
+		if(!$feature) return false;
+		
+		$url=ltrim($url,"/");
+		
+		$this->connectFeature();
+		$theurl="feature/".$feature."/api";
+		if($url) $theurl.="/".$url;
+
+		
+		return $this->call($method, $theurl, $args, false);
+
+	}
+
+	private function call($method, $url, $args=[], $connect=true){
 		$url=ltrim($url,"/");
 		if(!$url) return false;
 
-		
-		$this->connect();
+		// dump($connect, $this->client);
+		if($connect) $this->connect(); 
 
 		//forzar header json
 		if(isset($args["headers"])){
@@ -85,9 +123,10 @@ trait IsRestClient
 		}
 
 
-		
+		// dump("CENSAT: Calling $method to url:" .$url);
+			
 		if($this->debug){
-			Log::debug("CENSAT: Calling $method to url:" .$this->apiurl."".$url);
+			Log::debug("CENSAT: Calling $method to url:" .$url);
 			Log::debug("CENSAT: Options:");
 			Log::debug($args);
 		}

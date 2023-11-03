@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 if (! function_exists('isJson')) {
 	function isJson($string) {
@@ -48,3 +50,10 @@ if (! function_exists('to_array_first')) {
 	}
 }
 
+
+if (! function_exists('is_collection')) {
+	function is_collection($obj){
+		return $obj && ($obj instanceof Collection || $obj instanceof EloquentCollection);
+
+	}
+}

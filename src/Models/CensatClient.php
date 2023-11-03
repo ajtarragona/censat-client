@@ -571,8 +571,79 @@ class CensatClient {
 
 
 
+
+
+	/** TREES FEATURE */
+
+	public function getTrees($options=[]){
+		$ret=$this->callFeature('GET','census/trees','/',[
+			'query' => $options
+		]);	
+		return Tree::cast($ret);
+	}
+
 	
 
+	public function getTree($tree_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id, [
+			'query' => $options
+		]);	
+		return Tree::cast($ret);
+	}
 
+	public function getTreeNodes($tree_id, $options=[]){
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/children',[
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+
+	public function getNode($tree_id, $node_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees', $tree_id.'/node/'.$node_id , [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+
+
+	public function getNodeChildren($tree_id, $node_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/node/'.$node_id.'/children', [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+	public function getNodeParent($tree_id, $node_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/node/'.$node_id.'/parent', [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+
+	public function getNodeAncestors($tree_id, $node_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/node/'.$node_id.'/ancestors', [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+	public function getNodeDescendants($tree_id, $node_id, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/node/'.$node_id.'/descendants', [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
+
+	public function getNodeSiblings($tree_id, $node_id, $direction=null, $options=[]){
+		// $url='census/trees/'.$tree_id;
+		$ret=$this->callFeature('GET','census/trees',$tree_id.'/node/'.$node_id.'/siblings'.($direction?('/'.$direction):''), [
+			'query' => $options
+		]);	
+		return TreeNode::cast($ret);
+	}
 
 }
