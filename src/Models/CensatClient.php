@@ -559,6 +559,7 @@ class CensatClient {
 		$doc=$this->getAttachment($attachment_id);
 		if($doc){
 			$content= $this->getAttachmentContent($attachment_id);
+			$content=base64_decode($content);
 			return response($content)->withHeaders([
 				'Content-disposition' => 'attachment; filename=' . $doc->name,
 				'Access-Control-Expose-Headers' => 'Content-Disposition',
