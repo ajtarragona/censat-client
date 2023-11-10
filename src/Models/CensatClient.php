@@ -324,6 +324,13 @@ class CensatClient {
 							$hasfiles=true;
 						}
 					}
+				}else if(is_array($value)){
+					foreach($value as $i=>$v){
+						$prepared_fields[]=[
+							'name' => $key."[".$i."]",
+							'contents' => $v
+						];
+					}
 				}else{
 					// $normal_fields[$key]=$value;
 					
@@ -359,6 +366,7 @@ class CensatClient {
 		
 		$url='instances/'.$census_name.'/'.$entity_name;
 		
+		// dd($this->prepareArguments($fields));
 		$ret=$this->call('POST',$url, $this->prepareArguments($fields) );
 			
 
