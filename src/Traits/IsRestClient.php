@@ -136,6 +136,7 @@ trait IsRestClient
 		$ret=false;
 
 		try{
+			// dd($args);
 			$response = $this->client->request($method, $url, $args);
 			// dd($response);
 

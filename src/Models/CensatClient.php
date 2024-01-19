@@ -349,7 +349,7 @@ class CensatClient {
 				];
 			}else{
 				$ret= [
-					'form_params' => $fields
+					'json' => $fields
 				];
 			}
 			
@@ -403,11 +403,14 @@ class CensatClient {
 		$args=[];
 		
 		if($hard){
+			
 			$args=[
-				'destroy' => true
+				'form_params' =>[
+					'destroy' => true
+				]
 			];
 		}
-
+		// dd($args);
 		$ret=$this->call('DELETE',$url, $args);
 
 		return $ret;
