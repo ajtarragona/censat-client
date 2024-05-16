@@ -81,14 +81,22 @@ class CensatClient {
 
 
 	public function entityFields($short_name){
-		$fields=$this->call('GET','entity/'.$short_name.'/fields',[
-			'query' => [
+		$args=[];
+		// dd($this->apiversion);
+		
+		if($this->apiversion==2){
+			$args=[
 				"settings"=> true,
-			]
+			];
+		}
+		$fields=$this->call('GET','entity/'.$short_name.'/fields',[
+			'query' => $args
 		]);
+		
 		if($fields){
 			 $ret=collect();
 			 foreach($fields as $key=>$field){
+				
 				 $ret->put($key, new Field( $short_name, $key, $field));
 			 }
 			 return $ret;
@@ -107,6 +115,8 @@ class CensatClient {
 			]
 		]);
 		// dump($ret);
+		// dd("HOLA",$ret);
+		
 		return new Field( $entity_name, $field_name, $ret);
 	}
 

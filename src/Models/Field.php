@@ -16,17 +16,19 @@ class Field{
     private $settings;
     
     
-    public function __construct($entity_name,$short_name,$args=null)
+    public function __construct($entity_name,$short_name, $args=null)
     {
+        // dump($entity_name,$short_name,$args);
         if($args && is_object($args)){
             
             $this->entity_name = $entity_name;
             $this->short_name = $short_name;
-            $this->settings=$args;
-            if(isset($args->label)) $this->label = $args->label;
-            if(isset($args->type)) $this->type = $args->type->short_name;
+            $this->settings = $args->settings??$args;
+            $this->label = $this->settings->label ?? '';
+            $this->type = $args->short_name?? ($this->settings->type??null);
             
         }
+        // dd($this);
             
     }
 
@@ -36,10 +38,10 @@ class Field{
     
 
 
-    public function options(){
+    public function options($assoc=true){
         if($this->type=="select"){
             if(isset($this->settings->options))
-                return $this->settings->options;
+                return $assoc  ? (collect($this->settings->options)->keyBy('value')->map(function($item){ return $item->name;})->toArray()) : $this->settings->options;
 
             return null;
         }
