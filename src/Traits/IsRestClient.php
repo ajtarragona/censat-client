@@ -31,7 +31,7 @@ trait IsRestClient
 		$url=substr($this->apiurl, 0, strpos($this->apiurl,"/api"));
 		// dd($this->apiurl,$url);
 		// dump("CENSAT: Connecting to API:" .$url);
-		if($this->debug) Log::debug("CENSAT CLIENT: Connecting to API:" .$url);
+		if($this->debug) Log::debug("[CENSAT CLIENT] Connecting to API:" .$url);
 
 
 		$this->client = new Client([
@@ -48,7 +48,7 @@ trait IsRestClient
 		// if(!$this->client){
 
 			
-		if($this->debug) Log::debug("CENSAT CLIENT: Connecting to API:" .$this->apiurl);
+		if($this->debug) Log::debug("[CENSAT CLIENT] Connecting to API:" .$this->apiurl);
 
 
 		$this->client = new Client([
@@ -63,7 +63,7 @@ trait IsRestClient
 			try{
 
 				if($this->debug){
-					Log::debug("CENSAT CLIENT: Login user {$this->username}");
+					Log::debug("[CENSAT CLIENT] Login user {$this->username}");
 				}
 				
 				$response = $this->client->request('POST', "login", [
@@ -75,7 +75,7 @@ trait IsRestClient
 						'Accept'     => 'application/json'
 					]
 				]);
-				if($this->debug) Log::debug("CENSAT CLIENT: Login user RESPONSE:\n". $response->getBody() );
+				if($this->debug) Log::debug("[CENSAT CLIENT] Login user RESPONSE:\n". json_pretty($response->getBody()) );
 
 				$this->token = json_decode($response->getBody())->access_token;
 				// dd($this->token);
@@ -127,7 +127,7 @@ trait IsRestClient
 		// dump("CENSAT: Calling $method to url:" .$url);
 			
 		if($this->debug){
-			Log::debug("CENSAT CLIENT: Calling $method '" .$url ."' with Parameters: \n". json_pretty($args));
+			Log::debug("[CENSAT CLIENT] Calling $method '" .$url ."' with Parameters: \n". json_pretty($args));
 		}
 		
 	
@@ -140,7 +140,7 @@ trait IsRestClient
 			// dd($response);
 
 			if($this->debug){
-				Log::debug("CENSAT CLIENT: RESPONSE [STATUS: ".$response->getStatusCode()."]\n". ((string)$response->getBody()));
+				Log::debug("[CENSAT CLIENT] RESPONSE [STATUS: ".$response->getStatusCode()."]\n". ((string)$response->getBody()));
 			}
 			switch($response->getStatusCode()){
 				case 200:
@@ -190,7 +190,7 @@ trait IsRestClient
 	private function parseException($e){
 		// dd('parseException',$e);
 		if($this->debug){
-			Log::error("CENSAT CLIENT: API error \n ". $e->getTraceAsString());
+			Log::error("[CENSAT CLIENT] API error \n ". $e->getTraceAsString());
 		}
 
 
